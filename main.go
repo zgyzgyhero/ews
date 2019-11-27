@@ -3,25 +3,27 @@ package main
 import (
 	"fmt"
 	"github.com/mhewedy/ews/ews"
+	"log"
 )
 
 func main() {
 
-	client := &ews.Client{
-		EWSAddr:  "https://outlook.office365.com/EWS/Exchange.asmx",
-		Username: "example@mhewedy.onmicrosoft.com",
-		Password: "systemsystem@123",
-	}
+	client := ews.NewClientWithConfig(
+		"https://outlook.office365.com/EWS/Exchange.asmx",
+		"example@mhewedy.onmicrosoft.com",
+		"systemsystem@123",
+		&ews.Config{Dump: true},
+	)
 
 	err := ews.CreateItem(client,
-		"example",
+		"example@mhewedy.onmicrosoft.com",
 		[]string{"mhewedy@gmail.com", "someone@else.com"},
 		"An email subject",
 		"The email body, as plain text",
 	)
 
 	if err != nil {
-		// handle err
+		log.Fatal("err: ", err)
 	}
 
 	fmt.Println("mail sent")
