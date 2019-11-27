@@ -1,7 +1,7 @@
 very dumb, hacky, possibly flaky package to send emails from an Exchange server via EWS (in the event yours doesn't expose a SMTP server)
 
 usage:
-
+```
 	b, err := ews.BuildTextEmail(
 		"me@server.com",
 		[]string{"friend@example.com", "someone@else.com"},
@@ -22,7 +22,7 @@ usage:
 		// read body and figure out what happened
 	}
 	// read or ignore body; the email was sent
-
+```
 the other exported types are just the raw data structures for the request XML; you can ignore them
 
 I'm not sure if I'll develop this further; feel free to (warning: here be SOAP)
