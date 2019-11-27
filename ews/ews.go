@@ -1,8 +1,8 @@
-// 26 august 2016
 package ews
 
 import (
 	"bytes"
+	"fmt"
 	"net/http"
 )
 
@@ -24,17 +24,25 @@ const (
 	soapEnd = `</soap:Body></soap:Envelope>`
 )
 
-func Issue(ewsAddr string, username string, password string, body []byte) (*http.Response, error) {
+type Client struct {
+	EWSAddr  string
+	Username string
+	Password string
+}
+
+func (c *Client) sendAndReceive(body []byte) (*http.Response, error) {
 
 	bb := []byte(soapStart)
 	bb = append(bb, body...)
 	bb = append(bb, soapEnd...)
 
-	req, err := http.NewRequest("POST", ewsAddr, bytes.NewReader(bb))
+	fmt.Println(string(bb))
+
+	req, err := http.NewRequest("POST", c.EWSAddr, bytes.NewReader(bb))
 	if err != nil {
 		return nil, err
 	}
-	req.SetBasicAuth(username, password)
+	req.SetBasicAuth(c.Username, c.Password)
 	req.Header.Set("Content-Type", "text/xml")
 	client := &http.Client{
 		CheckRedirect: func(req *http.Request, via []*http.Request) error {
