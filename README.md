@@ -1,27 +1,31 @@
+## EWS Exchange Web Service
+Is a exchange web service client in golang 
+
 very dumb, hacky, possibly flaky package to send emails from an Exchange server via EWS (in the event yours doesn't expose a SMTP server)
 
 usage:
 ```
-	b, err := ews.BuildTextEmail(
-		"me@server.com",
-		[]string{"friend@example.com", "someone@else.com"},
+func main() {
+
+	client := ews.NewClientWithConfig(
+		"https://outlook.office365.com/EWS/Exchange.asmx",
+		"example@mhewedy.onmicrosoft.com",
+		"systemsystem@123",
+		&ews.Config{Dump: true},
+	)
+
+	err := ews.CreateItem(client,
+		[]string{"mhewedy@gmail.com", "someone@else.com"},
 		"An email subject",
-		[]byte("The email body, as plain text"))
+		"The email body, as plain text",
+	)
+
 	if err != nil {
-		// handle err
+		log.Fatal("err: ", err.Error())
 	}
-	resp, err := ews.Issue(
-		"https://exhange.server.com/ews/Exchange.asmx",
-		"domain\\username",
-		"password",
-		b)
-	if err != nil {
-		// handle err
-	}
-	if resp.StatusCode != 200 {
-		// read body and figure out what happened
-	}
-	// read or ignore body; the email was sent
+
+	fmt.Println("mail sent")
+}
 ```
 the other exported types are just the raw data structures for the request XML; you can ignore them
 
