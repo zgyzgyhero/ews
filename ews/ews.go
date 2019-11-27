@@ -3,6 +3,7 @@ package ews
 import (
 	"bytes"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"net/http/httputil"
 )
@@ -51,7 +52,7 @@ func NewClientWithConfig(ewsAddr, username, password string, config *Config) *Cl
 	}
 }
 
-func (c *Client) sendAndReceive(body []byte) (*http.Response, error) {
+func (c *Client) sendAndReceive(body []byte) ([]byte, error) {
 
 	bb := []byte(soapStart)
 	bb = append(bb, body...)
@@ -61,6 +62,7 @@ func (c *Client) sendAndReceive(body []byte) (*http.Response, error) {
 	if err != nil {
 		return nil, err
 	}
+	defer req.Body.Close()
 	logRequest(c, req)
 
 	req.SetBasicAuth(c.Username, c.Password)
@@ -75,13 +77,19 @@ func (c *Client) sendAndReceive(body []byte) (*http.Response, error) {
 	if err != nil {
 		return nil, err
 	}
+	defer resp.Body.Close()
 	logResponse(c, resp)
 
 	if resp.StatusCode != http.StatusOK {
 		return nil, NewSoapError(resp)
 	}
 
-	return resp, err
+	respBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	return respBytes, err
 }
 
 func logRequest(c *Client, req *http.Request) {
