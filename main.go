@@ -14,10 +14,11 @@ func main() {
 	}
 
 	err := ews.CreateItem(client,
-		"example@mhewedy.onmicrosoft.com",
+		"example",
 		[]string{"mhewedy@gmail.com", "someone@else.com"},
 		"An email subject",
-		[]byte("The email body, as plain text"))
+		"The email body, as plain text",
+	)
 
 	if err != nil {
 		// handle err

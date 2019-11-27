@@ -53,7 +53,7 @@ type Mailbox struct {
 	EmailAddress string `xml:"t:EmailAddress"`
 }
 
-func CreateItem(c *Client, from string, to []string, subject string, body []byte) error {
+func CreateItem(c *Client, from string, to []string, subject, body string) error {
 
 	cReq := &CreateItemReq{
 		MessageDisposition: "SendAndSaveCopy",
@@ -64,7 +64,7 @@ func CreateItem(c *Client, from string, to []string, subject string, body []byte
 		Subject:   subject,
 		Body: Body{
 			BodyType: "Text",
-			Body:     body,
+			Body:     []byte(body),
 		},
 		Sender: OneMailbox{
 			Mailbox: Mailbox{

@@ -2,7 +2,6 @@ package ews
 
 import (
 	"bytes"
-	"fmt"
 	"net/http"
 )
 
@@ -35,8 +34,6 @@ func (c *Client) sendAndReceive(body []byte) (*http.Response, error) {
 	bb := []byte(soapStart)
 	bb = append(bb, body...)
 	bb = append(bb, soapEnd...)
-
-	fmt.Println(string(bb))
 
 	req, err := http.NewRequest("POST", c.EWSAddr, bytes.NewReader(bb))
 	if err != nil {
