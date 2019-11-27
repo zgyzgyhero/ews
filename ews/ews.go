@@ -61,7 +61,6 @@ func (c *Client) sendAndReceive(body []byte) (*http.Response, error) {
 	if err != nil {
 		return nil, err
 	}
-
 	logRequest(c, req)
 
 	req.SetBasicAuth(c.Username, c.Password)
@@ -73,8 +72,14 @@ func (c *Client) sendAndReceive(body []byte) (*http.Response, error) {
 		},
 	}
 	resp, err := client.Do(req)
-
+	if err != nil {
+		return nil, err
+	}
 	logResponse(c, resp)
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, NewSoapError(resp)
+	}
 
 	return resp, err
 }

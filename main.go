@@ -12,18 +12,17 @@ func main() {
 		"https://outlook.office365.com/EWS/Exchange.asmx",
 		"example@mhewedy.onmicrosoft.com",
 		"systemsystem@123",
-		&ews.Config{Dump: true},
+		&ews.Config{Dump: false},
 	)
 
 	err := ews.CreateItem(client,
-		"example@mhewedy.onmicrosoft.com",
 		[]string{"mhewedy@gmail.com", "someone@else.com"},
 		"An email subject",
 		"The email body, as plain text",
 	)
 
 	if err != nil {
-		log.Fatal("err: ", err)
+		log.Fatal("err: ", err.Error())
 	}
 
 	fmt.Println("mail sent")

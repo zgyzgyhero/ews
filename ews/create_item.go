@@ -2,9 +2,6 @@ package ews
 
 import (
 	"encoding/xml"
-	"io/ioutil"
-	"log"
-	"net/http"
 )
 
 // https://msdn.microsoft.com/en-us/library/office/aa563009(v=exchg.140).aspx
@@ -53,7 +50,7 @@ type Mailbox struct {
 	EmailAddress string `xml:"t:EmailAddress"`
 }
 
-func CreateItem(c *Client, from string, to []string, subject, body string) error {
+func CreateItem(c *Client, to []string, subject, body string) error {
 
 	cReq := &CreateItemReq{
 		MessageDisposition: "SendAndSaveCopy",
@@ -68,7 +65,7 @@ func CreateItem(c *Client, from string, to []string, subject, body string) error
 		},
 		Sender: OneMailbox{
 			Mailbox: Mailbox{
-				EmailAddress: from,
+				EmailAddress: c.Username,
 			},
 		},
 	}
@@ -84,17 +81,9 @@ func CreateItem(c *Client, from string, to []string, subject, body string) error
 		return err
 	}
 
-	resp, err := c.sendAndReceive(reqBytes)
+	_, err = c.sendAndReceive(reqBytes)
 	if err != nil {
 		return err
 	}
-	if resp.StatusCode != http.StatusOK {
-		bbs, err := ioutil.ReadAll(resp.Body)
-		if err != nil {
-			log.Fatal(err)
-		}
-		log.Fatal(string(bbs))
-	}
-
 	return nil
 }
