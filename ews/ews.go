@@ -8,9 +8,7 @@ import (
 	"net/http/httputil"
 )
 
-// https://msdn.microsoft.com/en-us/library/office/dd877045(v=exchg.140).aspx
-// https://arvinddangra.wordpress.com/2011/09/29/send-email-using-exchange-smtp-and-ews-exchange-web-service/
-// https://msdn.microsoft.com/en-us/library/office/dn789003(v=exchg.150).aspx
+// https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/ews-operations-in-exchange
 
 const (
 	soapStart = `<?xml version="1.0" encoding="utf-8" ?>
@@ -19,7 +17,7 @@ const (
 		xmlns:t="http://schemas.microsoft.com/exchange/services/2006/types" 
 		xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
   		<soap:Header>
-    		<t:RequestServerVersion Version="Exchange2007_SP1" />
+    		<t:RequestServerVersion Version="Exchange2010_SP1" />
   		</soap:Header>
   		<soap:Body>
 `
