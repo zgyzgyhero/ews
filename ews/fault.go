@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-type soapError struct {
+type SoapError struct {
 	Fault *Fault
 }
 
@@ -21,10 +21,10 @@ func NewSoapError(resp *http.Response) error {
 	if fault == nil {
 		return errors.New(resp.Status)
 	}
-	return &soapError{Fault: fault}
+	return &SoapError{Fault: fault}
 }
 
-func (s soapError) Error() string {
+func (s SoapError) Error() string {
 	return s.Fault.Faultstring
 }
 
