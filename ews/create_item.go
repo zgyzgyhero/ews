@@ -5,8 +5,6 @@ import (
 	"time"
 )
 
-// https://msdn.microsoft.com/en-us/library/office/aa563009(v=exchg.140).aspx
-
 type CreateItem struct {
 	XMLName                struct{}          `xml:"m:CreateItem"`
 	MessageDisposition     string            `xml:"MessageDisposition,attr"`
