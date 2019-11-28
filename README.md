@@ -1,24 +1,22 @@
 ## EWS Exchange Web Service
-Is a exchange web service client in golang 
+Exchange Web Service client for golang
 
-very dumb, hacky, possibly flaky package to send emails from an Exchange server via EWS (in the event yours doesn't expose a SMTP server)
-
-usage:
+### usage:
 ```
 func main() {
 
 	client := ews.NewClientWithConfig(
 		"https://outlook.office365.com/EWS/Exchange.asmx",
-		"example@mhewedy.onmicrosoft.com",
-		"systemsystem@123",
+		"email@myexchangeserver",
+		"my password",
 		&ews.Config{Dump: true},
 	)
 
-	err := ews.CreateItem(client,
-		[]string{"mhewedy@gmail.com", "someone@else.com"},
-		"An email subject",
-		"The email body, as plain text",
-	)
+	err := ews.SendEmail(c,
+        []string{"mhewedy@gmail.com", "someone@else.com"},
+        "An email subject",
+        "The email body, as plain text",
+    )
 
 	if err != nil {
 		log.Fatal("err: ", err.Error())
@@ -27,10 +25,33 @@ func main() {
 	fmt.Println("mail sent")
 }
 ```
-the other exported types are just the raw data structures for the request XML; you can ignore them
 
-I'm not sure if I'll develop this further; feel free to (warning: here be SOAP)
-some resources I used are in comments in the code
+### Supported Feature matrix:
 
-TODOs
-- figure out why UTF-8 isn't used for email bodies, or how to force the encoding
+| Category                         	| Operation            	| Supported        	|
+|----------------------------------	|----------------------	|------------------	|
+| eDiscovery operations            	|                      	|                  	|
+| Exchange mailbox data operations 	|                      	|                  	|
+|                                  	| CreateItem operation 	| Email & Calendar 	|
+| Availability operations          	|                      	|                  	|
+|                                  	| GetUserAvailability  	| WIP              	|
+| Bulk transfer operations         	|                      	|                  	|
+| Delegate management operations   	|                      	|                  	|
+| Inbox rules operations           	|                      	|                  	|
+| Mail app management operations   	|                      	|                  	|
+| Mail tips operation              	|                      	|                  	|
+| Message tracking operations      	|                      	|                  	|
+| Notification operations          	|                      	|                  	|
+| Persona operations               	|                      	|                  	|
+| Retention policy operation       	|                      	|                  	|
+| Service configuration operation  	|                      	|                  	|
+| Sharing operations               	|                      	|                  	|
+| Synchronization operations       	|                      	|                  	|
+| Time zone operation              	|                      	|                  	|
+| Unified Messaging operations     	|                      	|                  	|
+| Unified Contact Store operations 	|                      	|                  	|
+| User configuration operations    	|                      	|                  	|
+
+
+#### Reference:
+https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/ews-operations-in-exchange
