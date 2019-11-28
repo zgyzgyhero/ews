@@ -15,7 +15,7 @@ func main() {
 		&ews.Config{Dump: true},
 	)
 
-	err := ews.CreateItem(client,
+	err := ews.SendEmail(client,
 		[]string{"mhewedy@gmail.com", "someone@else.com"},
 		"An email subject",
 		"The email body, as plain text",

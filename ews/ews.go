@@ -8,8 +8,6 @@ import (
 	"net/http/httputil"
 )
 
-// https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/ews-operations-in-exchange
-
 const (
 	soapStart = `<?xml version="1.0" encoding="utf-8" ?>
 	<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
