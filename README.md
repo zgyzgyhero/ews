@@ -2,28 +2,39 @@
 Exchange Web Service client for golang
 
 ### usage:
-```
+```go
+package main
+
+import (
+	"fmt"
+	"github.com/mhewedy/ews"
+	"github.com/mhewedy/ews/ewsutil"
+	"log"
+	"time"
+)
+
 func main() {
 
-	client := ews.NewClientWithConfig(
+	c := ews.NewClientWithConfig(
 		"https://outlook.office365.com/EWS/Exchange.asmx",
-		"email@myexchangeserver",
-		"my password",
+		"email@exchangedomain",
+		"password",
 		&ews.Config{Dump: true},
 	)
 
-	err := ews.SendEmail(c,
-        []string{"mhewedy@gmail.com", "someone@else.com"},
-        "An email subject",
-        "The email body, as plain text",
-    )
+	err := ewsutil.SendEmail(c,
+		[]string{"mhewedy@gmail.com", "someone@else.com"},
+		"An email subject",
+		"The email body, as plain text",
+	)
 
 	if err != nil {
-		log.Fatal("err: ", err.Error())
+		log.Fatal("err>: ", err.Error())
 	}
 
-	fmt.Println("mail sent")
+	fmt.Println("--- success ---")
 }
+
 ```
 
 ### Supported Feature matrix:
