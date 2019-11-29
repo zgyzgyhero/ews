@@ -2,7 +2,8 @@ package main
 
 import (
 	"fmt"
-	"github.com/mhewedy/ews/ews"
+	"github.com/mhewedy/ews"
+	"github.com/mhewedy/ews/ewsutil"
 	"log"
 	"time"
 )
@@ -30,7 +31,7 @@ func main() {
 }
 
 func testSendEmail(c *ews.Client) error {
-	return ews.SendEmail(c,
+	return ewsutil.SendEmail(c,
 		[]string{"mhewedy@gmail.com", "someone@else.com"},
 		"An email subject",
 		"The email body, as plain text",

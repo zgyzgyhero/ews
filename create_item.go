@@ -94,31 +94,6 @@ func CreateMessageItem(c *Client, m ...Message) error {
 	return nil
 }
 
-// SendEmail helper method to send Message
-func SendEmail(c *Client, to []string, subject, body string) error {
-
-	m := Message{
-		ItemClass: "IPM.Note",
-		Subject:   subject,
-		Body: Body{
-			BodyType: "Text",
-			Body:     []byte(body),
-		},
-		Sender: OneMailbox{
-			Mailbox: Mailbox{
-				EmailAddress: c.Username,
-			},
-		},
-	}
-	mb := make([]Mailbox, len(to))
-	for i, addr := range to {
-		mb[i].EmailAddress = addr
-	}
-	m.ToRecipients.Mailbox = append(m.ToRecipients.Mailbox, mb...)
-
-	return CreateMessageItem(c, m)
-}
-
 // CreateCalendarItem
 // https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/createitem-operation-calendar-item
 func CreateCalendarItem(c *Client, ci ...CalendarItem) error {
