@@ -75,8 +75,8 @@ func testGetUserAvailability(c *ews.Client) error {
 		ExcludeConflicts: false,
 	})
 
-	start, _ := time.Parse(time.RFC3339, "2006-02-06T00:00:00Z")
-	end, _ := time.Parse(time.RFC3339, "2006-02-25T23:59:59Z")
+	start, _ := time.Parse(time.RFC3339, "2019-11-28T00:00:00Z")
+	end, _ := time.Parse(time.RFC3339, "2019-11-30T00:00:00Z")
 
 	req := &ews.GetUserAvailabilityRequest{
 		TimeZone: ews.TimeZone{

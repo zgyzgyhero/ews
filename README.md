@@ -34,7 +34,7 @@ func main() {
 | Exchange mailbox data operations 	|                      	|                  	|
 |                                  	| CreateItem operation 	| Email & Calendar 	|
 | Availability operations          	|                      	|                  	|
-|                                  	| GetUserAvailability  	| WIP              	|
+|                                  	| GetUserAvailability  	| Done          	|
 | Bulk transfer operations         	|                      	|                  	|
 | Delegate management operations   	|                      	|                  	|
 | Inbox rules operations           	|                      	|                  	|
