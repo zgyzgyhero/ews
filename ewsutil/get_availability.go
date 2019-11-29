@@ -16,7 +16,7 @@ type Event struct {
 	BusyType ews.BusyType
 }
 
-func GetAvailability(
+func ListUsersEvents(
 	c *ews.Client, eventUsers []EventUser, from time.Time, duration time.Duration,
 ) ([]Event, error) {
 

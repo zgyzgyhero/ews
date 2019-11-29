@@ -23,7 +23,7 @@ func main() {
 
 	//err := testGetUserAvailability(c)
 
-	err := testGetAvailability(c)
+	err := testGetUsersEvents(c)
 
 	if err != nil {
 		log.Fatal("err>: ", err.Error())
@@ -128,7 +128,7 @@ func testGetUserAvailability(c *ews.Client) error {
 	return nil
 }
 
-func testGetAvailability(c *ews.Client) error {
+func testListUsersEvents(c *ews.Client) error {
 
 	eventUsers := []ewsutil.EventUser{
 		{
@@ -142,7 +142,7 @@ func testGetAvailability(c *ews.Client) error {
 	}
 	start, _ := time.Parse(time.RFC3339, "2019-11-29T00:00:00Z")
 
-	events, err := ewsutil.GetAvailability(c, eventUsers, start, 48*time.Hour)
+	events, err := ewsutil.ListUsersEvents(c, eventUsers, start, 48*time.Hour)
 
 	if err != nil {
 		return err
