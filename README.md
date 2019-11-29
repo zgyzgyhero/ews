@@ -32,9 +32,9 @@ func main() {
 |----------------------------------	|----------------------	|------------------	|
 | eDiscovery operations            	|                      	|                  	|
 | Exchange mailbox data operations 	|                      	|                  	|
-|                                  	| CreateItem operation 	| Email & Calendar 	|
+|                                  	| CreateItem operation 	| ✔️ (Email & Calendar)|
 | Availability operations          	|                      	|                  	|
-|                                  	| GetUserAvailability  	| Done          	|
+|                                  	| GetUserAvailability  	| ✔️             	|
 | Bulk transfer operations         	|                      	|                  	|
 | Delegate management operations   	|                      	|                  	|
 | Inbox rules operations           	|                      	|                  	|
