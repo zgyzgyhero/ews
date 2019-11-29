@@ -71,16 +71,24 @@ func testGetUserAvailability(c *ews.Client) error {
 			Address:     "mhewedy@mhewedy.onmicrosoft.com",
 			RoutingType: "SMTP",
 		},
-		AttendeeType:     ews.AttendeeTypeOrganizer,
+		AttendeeType:     ews.AttendeeTypeRequired,
+		ExcludeConflicts: false,
+	}, ews.MailboxData{
+		Email: ews.Email{
+			Name:        "",
+			Address:     "example2@mhewedy.onmicrosoft.com",
+			RoutingType: "SMTP",
+		},
+		AttendeeType:     ews.AttendeeTypeRoom,
 		ExcludeConflicts: false,
 	})
 
 	start, _ := time.Parse(time.RFC3339, "2019-11-28T00:00:00Z")
-	end, _ := time.Parse(time.RFC3339, "2019-11-30T00:00:00Z")
+	end, _ := time.Parse(time.RFC3339, "2019-12-10T00:00:00Z")
 
 	req := &ews.GetUserAvailabilityRequest{
 		TimeZone: ews.TimeZone{
-			Bias: 480,
+			Bias: -180,
 			StandardTime: ews.Time{
 				Bias:      0,
 				Time:      "02:00:00",
@@ -89,7 +97,7 @@ func testGetUserAvailability(c *ews.Client) error {
 				DayOfWeek: "Sunday",
 			},
 			DaylightTime: ews.Time{
-				Bias:      -60,
+				Bias:      0,
 				Time:      "02:00:00",
 				DayOrder:  1,
 				Month:     4,
@@ -103,7 +111,7 @@ func testGetUserAvailability(c *ews.Client) error {
 				EndTime:   end,
 			},
 			MergedFreeBusyIntervalInMinutes: 60,
-			RequestedView:                   ews.RequestedViewFreeBusyMerged,
+			RequestedView:                   ews.RequestedViewFreeBusy,
 		},
 	}
 
