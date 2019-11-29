@@ -77,8 +77,7 @@ func buildGetUserAvailabilityRequest(
 				StartTime: from,
 				EndTime:   from.Add(duration),
 			},
-			MergedFreeBusyIntervalInMinutes: int(duration / time.Minute),
-			RequestedView:                   ews.RequestedViewFreeBusy,
+			RequestedView: ews.RequestedViewFreeBusy,
 		},
 	}
 	return req

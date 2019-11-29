@@ -44,7 +44,7 @@ type GetUserAvailabilityRequest struct {
 
 type FreeBusyViewOptions struct {
 	TimeWindow                      TimeWindow `xml:"t:TimeWindow"`
-	MergedFreeBusyIntervalInMinutes int        `xml:"t:MergedFreeBusyIntervalInMinutes"`
+	MergedFreeBusyIntervalInMinutes int        `xml:"t:MergedFreeBusyIntervalInMinutes,omitempty"`
 	RequestedView                   string     `xml:"t:RequestedView"`
 }
 

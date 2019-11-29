@@ -113,7 +113,7 @@ func testGetUserAvailability(c *ews.Client) error {
 				StartTime: start,
 				EndTime:   end,
 			},
-			MergedFreeBusyIntervalInMinutes: 60,
+			MergedFreeBusyIntervalInMinutes: 30,
 			RequestedView:                   ews.RequestedViewFreeBusy,
 		},
 	}
@@ -142,7 +142,7 @@ func testGetAvailability(c *ews.Client) error {
 	}
 	start, _ := time.Parse(time.RFC3339, "2019-11-29T00:00:00Z")
 
-	events, err := ewsutil.GetAvailability(c, eventUsers, start, 24*time.Hour)
+	events, err := ewsutil.GetAvailability(c, eventUsers, start, 48*time.Hour)
 
 	if err != nil {
 		return err
