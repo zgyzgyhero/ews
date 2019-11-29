@@ -18,13 +18,15 @@ func main() {
 
 	//err := testSendEmail(c)
 
-	err := testCreateCalendarItem(c)
+	//err := testCreateCalendarItem(c)
+
+	err := testGetUserAvailability(c)
 
 	if err != nil {
 		log.Fatal("err: ", err.Error())
 	}
 
-	fmt.Println("--- sent ---")
+	fmt.Println("--- success ---")
 }
 
 func testSendEmail(c *ews.Client) error {
@@ -38,7 +40,7 @@ func testSendEmail(c *ews.Client) error {
 func testCreateCalendarItem(c *ews.Client) error {
 	attendee := make([]ews.Attendee, 0)
 	attendee = append(attendee,
-		ews.Attendee{Mailbox: ews.Mailbox{EmailAddress: "mhewedy@gmail.com"}},
+		ews.Attendee{Mailbox: ews.Mailbox{EmailAddress: "mhewedy@mhewedy.onmicrosoft.com"}},
 	)
 	attendees := make([]ews.Attendees, 0)
 	attendees = append(attendees, ews.Attendees{Attendee: attendee})
@@ -51,11 +53,66 @@ func testCreateCalendarItem(c *ews.Client) error {
 		},
 		ReminderIsSet:              true,
 		ReminderMinutesBeforeStart: 60,
-		Start:                      time.Now(),
-		End:                        time.Now().Add(30 * time.Minute),
+		Start:                      time.Now().Add(24 * time.Hour),
+		End:                        time.Now().Add(24 * time.Hour).Add(30 * time.Minute),
 		IsAllDayEvent:              false,
 		LegacyFreeBusyStatus:       "Busy",
 		Location:                   "Conference Room 721",
 		RequiredAttendees:          attendees,
 	})
+}
+
+func testGetUserAvailability(c *ews.Client) error {
+
+	mb := make([]ews.MailboxData, 0)
+	mb = append(mb, ews.MailboxData{
+		Email: ews.Email{
+			Name:        "",
+			Address:     "mhewedy@mhewedy.onmicrosoft.com",
+			RoutingType: "SMTP",
+		},
+		AttendeeType:     ews.AttendeeTypeOrganizer,
+		ExcludeConflicts: false,
+	})
+
+	start, _ := time.Parse(time.RFC3339, "2006-02-06T00:00:00Z")
+	end, _ := time.Parse(time.RFC3339, "2006-02-25T23:59:59Z")
+
+	req := &ews.GetUserAvailabilityRequest{
+		TimeZone: ews.TimeZone{
+			Bias: 480,
+			StandardTime: ews.Time{
+				Bias:      0,
+				Time:      "02:00:00",
+				DayOrder:  5,
+				Month:     10,
+				DayOfWeek: "Sunday",
+			},
+			DaylightTime: ews.Time{
+				Bias:      -60,
+				Time:      "02:00:00",
+				DayOrder:  1,
+				Month:     4,
+				DayOfWeek: "Sunday",
+			},
+		},
+		MailboxDataArray: ews.MailboxDataArray{MailboxData: mb},
+		FreeBusyViewOptions: ews.FreeBusyViewOptions{
+			TimeWindow: ews.TimeWindow{
+				StartTime: start,
+				EndTime:   end,
+			},
+			MergedFreeBusyIntervalInMinutes: 60,
+			RequestedView:                   ews.RequestedViewFreeBusyMerged,
+		},
+	}
+
+	response, err := ews.GetUserAvailability(c, req)
+	if err != nil {
+		return err
+	}
+
+	fmt.Println(response)
+
+	return nil
 }

@@ -43,12 +43,12 @@ type Fault struct {
 }
 
 type detail struct {
-	ResponseCode string     `xml:"ResponseCode"`
-	Message      string     `xml:"Message"`
-	MessageXml   messageXml `xml:"MessageXml"`
+	ResponseCode string          `xml:"ResponseCode"`
+	Message      string          `xml:"Message"`
+	MessageXml   faultMessageXml `xml:"MessageXml"`
 }
 
-type messageXml struct {
+type faultMessageXml struct {
 	LineNumber   string `xml:"LineNumber"`
 	LinePosition string `xml:"LinePosition"`
 	Violation    string `xml:"Violation"`

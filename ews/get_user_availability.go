@@ -2,6 +2,7 @@ package ews
 
 import (
 	"encoding/xml"
+	"errors"
 	"time"
 )
 
@@ -128,7 +129,14 @@ type ResponseMessage struct {
 	MessageText        string     `xml:"MessageText"`
 	ResponseCode       string     `xml:"ResponseCode"`
 	DescriptiveLinkKey int        `xml:"DescriptiveLinkKey"`
-	MessageXml         messageXml `xml:"MessageXml"`
+	MessageXml         MessageXml `xml:"MessageXml"`
+}
+
+type MessageXml struct {
+	ExceptionType       string `xml:"ExceptionType"`
+	ExceptionCode       string `xml:"ExceptionCode"`
+	ExceptionServerName string `xml:"ExceptionServerName"`
+	ExceptionMessage    string `xml:"ExceptionMessage"`
 }
 
 type FreeBusyView struct {
@@ -175,6 +183,14 @@ type CalendarEventDetails struct {
 	IsPrivate     bool   `xml:"IsPrivate"`
 }
 
+type getUserAvailabilityResponseEnvelop struct {
+	XMLName struct{}                        `xml:"Envelope"`
+	Body    getUserAvailabilityResponseBody `xml:"Body"`
+}
+type getUserAvailabilityResponseBody struct {
+	GetUserAvailabilityResponse GetUserAvailabilityResponse `xml:"GetUserAvailabilityResponse"`
+}
+
 // GetUserAvailability
 //https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getuseravailability-operation
 func GetUserAvailability(c *Client, r *GetUserAvailabilityRequest) (*GetUserAvailabilityResponse, error) {
@@ -189,11 +205,28 @@ func GetUserAvailability(c *Client, r *GetUserAvailabilityRequest) (*GetUserAvai
 		return nil, err
 	}
 
-	var resp GetUserAvailabilityResponse
-	err = xml.Unmarshal(bb, &resp)
+	var soapResp getUserAvailabilityResponseEnvelop
+	err = xml.Unmarshal(bb, &soapResp)
+	if err != nil {
+		return nil, err
+	}
+
+	resp := soapResp.Body.GetUserAvailabilityResponse
+
+	err = checkForFunctionalError(&resp)
 	if err != nil {
 		return nil, err
 	}
 
 	return &resp, nil
+}
+
+func checkForFunctionalError(resp *GetUserAvailabilityResponse) error {
+	if len(resp.FreeBusyResponseArray.FreeBusyResponse) > 0 &&
+		resp.FreeBusyResponseArray.FreeBusyResponse[0].ResponseMessage.ResponseClass == "Error" {
+		return errors.New(
+			resp.FreeBusyResponseArray.FreeBusyResponse[0].ResponseMessage.MessageXml.ExceptionMessage,
+		)
+	}
+	return nil
 }

@@ -73,7 +73,7 @@ var (
 		Detail: detail{
 			ResponseCode: "ErrorSchemaValidation",
 			Message:      "The request failed schema validation.",
-			MessageXml: messageXml{
+			MessageXml: faultMessageXml{
 				LineNumber:   "0",
 				LinePosition: "0",
 				Violation:    `End element 'Envelope' from namespace 'http://schemas.xmlsoap.org/soap/envelope/' expected. Found text '\n'. Line 4, position 60.`,
