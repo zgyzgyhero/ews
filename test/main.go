@@ -23,7 +23,7 @@ func main() {
 
 	//err := testGetUserAvailability(c)
 
-	err := testGetUsersEvents(c)
+	err := testListUsersEvents(c)
 
 	if err != nil {
 		log.Fatal("err>: ", err.Error())
