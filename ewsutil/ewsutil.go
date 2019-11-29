@@ -28,3 +28,7 @@ func SendEmail(c *ews.Client, to []string, subject, body string) error {
 
 	return ews.CreateMessageItem(c, m)
 }
+
+func GetUserAvailability() {
+
+}

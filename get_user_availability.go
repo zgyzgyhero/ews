@@ -6,12 +6,14 @@ import (
 	"time"
 )
 
+type AttendeeType string
+
 const (
-	AttendeeTypeOrganizer = "Organizer"
-	AttendeeTypeRequired  = "Required"
-	AttendeeTypeOptional  = "Optional"
-	AttendeeTypeRoom      = "Room"
-	AttendeeTypeResource  = "Resource"
+	AttendeeTypeOrganizer AttendeeType = "Organizer"
+	AttendeeTypeRequired  AttendeeType = "Required"
+	AttendeeTypeOptional  AttendeeType = "Optional"
+	AttendeeTypeRoom      AttendeeType = "Room"
+	AttendeeTypeResource  AttendeeType = "Resource"
 )
 
 const (
@@ -21,6 +23,16 @@ const (
 	RequestedViewFreeBusyMerged = "FreeBusyMerged"
 	RequestedViewDetailed       = "Detailed"
 	RequestedViewDetailedMerged = "DetailedMerged"
+)
+
+type BusyType string
+
+const (
+	BusyTypeFree      = "Free"
+	BusyTypeTentative = "Tentative"
+	BusyTypeBusy      = "Busy"
+	BusyTypeOOF       = "OOF"
+	BusyTypeNoData    = "NoData"
 )
 
 type GetUserAvailabilityRequest struct {
@@ -61,9 +73,9 @@ type MailboxDataArray struct {
 }
 
 type MailboxData struct {
-	Email            Email  `xml:"t:Email"`
-	AttendeeType     string `xml:"t:AttendeeType"`
-	ExcludeConflicts bool   `xml:"t:ExcludeConflicts"`
+	Email            Email        `xml:"t:Email"`
+	AttendeeType     AttendeeType `xml:"t:AttendeeType"`
+	ExcludeConflicts bool         `xml:"t:ExcludeConflicts"`
 }
 
 type Email struct {
@@ -168,7 +180,7 @@ type CalendarEventArray struct {
 type CalendarEvent struct {
 	StartTime            Time                 `xml:"StartTime"`
 	EndTime              Time                 `xml:"EndTime"`
-	BusyType             string               `xml:"BusyType"`
+	BusyType             BusyType             `xml:"BusyType"`
 	CalendarEventDetails CalendarEventDetails `xml:"CalendarEventDetails"`
 }
 
