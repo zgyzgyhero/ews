@@ -49,7 +49,7 @@ type Time struct {
 	DayOrder  int16  `xml:"t:DayOrder"`
 	Month     int16  `xml:"t:Month"`
 	DayOfWeek string `xml:"t:DayOfWeek"`
-	Year      string `xml:"Year"`
+	Year      string `xml:"Year,omitempty"`
 }
 
 type MailboxDataArray struct {
