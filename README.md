@@ -63,6 +63,11 @@ func main() {
 | Unified Contact Store operations 	|                      	|                  	|
 | User configuration operations    	|                      	|                  	|
 
+### Extras
+Besides the operations supported above, few new operations under the namespace `ewsutil` has been introduced:
+* `ewsutil.SendEmail` 
+* `ewsutil.CreateEvent`
+* `ewsutil.ListUsersEvents`
 
 #### Reference:
 https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/ews-operations-in-exchange
