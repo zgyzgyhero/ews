@@ -8,7 +8,10 @@ import (
 type Time string
 
 func (t Time) ToTime() (time.Time, error) {
-	offset, _ := getRFC3339Offset(time.Now())
+	offset, err := getRFC3339Offset(time.Now())
+	if err != nil {
+		return time.Time{}, err
+	}
 	return time.Parse(time.RFC3339, string(t)+offset)
 
 }

@@ -21,7 +21,9 @@ func main() {
 
 	//err := testCreateCalendarItem(c)
 
-	err := testGetUserAvailability(c)
+	//err := testGetUserAvailability(c)
+
+	err := testGetAvailability(c)
 
 	if err != nil {
 		log.Fatal("err>: ", err.Error())
@@ -89,7 +91,7 @@ func testGetUserAvailability(c *ews.Client) error {
 
 	req := &ews.GetUserAvailabilityRequest{
 		TimeZone: ews.TimeZone{
-			Bias: -180,
+			Bias: 180,
 			StandardTime: ews.TimeZoneTime{
 				Bias:      0,
 				Time:      "02:00:00",
@@ -122,6 +124,31 @@ func testGetUserAvailability(c *ews.Client) error {
 	}
 
 	fmt.Println(response)
+
+	return nil
+}
+
+func testGetAvailability(c *ews.Client) error {
+
+	eventUsers := []ewsutil.EventUser{
+		{
+			Email:        "mhewedy@mhewedy.onmicrosoft.com",
+			AttendeeType: ews.AttendeeTypeRequired,
+		},
+		{
+			Email:        "example2@mhewedy.onmicrosoft.com",
+			AttendeeType: ews.AttendeeTypeRequired,
+		},
+	}
+	start, _ := time.Parse(time.RFC3339, "2019-11-29T00:00:00Z")
+
+	events, err := ewsutil.GetAvailability(c, eventUsers, start, 24*time.Hour)
+
+	if err != nil {
+		return err
+	}
+
+	fmt.Println(events)
 
 	return nil
 }
