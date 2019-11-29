@@ -10,7 +10,6 @@ import (
 	"github.com/mhewedy/ews"
 	"github.com/mhewedy/ews/ewsutil"
 	"log"
-	"time"
 )
 
 func main() {
