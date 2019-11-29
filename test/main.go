@@ -23,7 +23,9 @@ func main() {
 
 	//err := testGetUserAvailability(c)
 
-	err := testListUsersEvents(c)
+	//err := testListUsersEvents(c)
+
+	err := testCreateEvent(c)
 
 	if err != nil {
 		log.Fatal("err>: ", err.Error())
@@ -151,4 +153,16 @@ func testListUsersEvents(c *ews.Client) error {
 	fmt.Println(events)
 
 	return nil
+}
+
+func testCreateEvent(c *ews.Client) error {
+
+	return ewsutil.CreateEvent(c,
+		[]string{"mhewedy@mhewedy.onmicrosoft.com", "example2@mhewedy.onmicrosoft.com"},
+		"An Event subject",
+		"An Event body, as plain text",
+		"Room 55",
+		time.Now().Add(24*time.Hour),
+		30*time.Minute,
+	)
 }

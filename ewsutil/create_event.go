@@ -22,11 +22,11 @@ func CreateEvent(
 			Body:     []byte(body),
 		},
 		ReminderIsSet:              true,
-		ReminderMinutesBeforeStart: 60,
+		ReminderMinutesBeforeStart: 15,
 		Start:                      from,
 		End:                        from.Add(duration),
 		IsAllDayEvent:              false,
-		LegacyFreeBusyStatus:       "Busy",
+		LegacyFreeBusyStatus:       ews.BusyTypeBusy,
 		Location:                   location,
 		RequiredAttendees:          []ews.Attendees{{Attendee: attendee}},
 	}
