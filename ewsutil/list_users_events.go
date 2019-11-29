@@ -55,7 +55,7 @@ func buildGetUserAvailabilityRequest(
 	req := &ews.GetUserAvailabilityRequest{
 		//https://github.com/MicrosoftDocs/office-developer-exchange-docs/issues/61
 		TimeZone: ews.TimeZone{
-			Bias: offset / 60,
+			Bias: -offset / 60,
 			StandardTime: ews.TimeZoneTime{ // I don't have much clue about the values here
 				Bias:      0,
 				Time:      "02:00:00",

@@ -91,7 +91,7 @@ func testGetUserAvailability(c *ews.Client) error {
 
 	req := &ews.GetUserAvailabilityRequest{
 		TimeZone: ews.TimeZone{
-			Bias: 180,
+			Bias: -180,
 			StandardTime: ews.TimeZoneTime{
 				Bias:      0,
 				Time:      "02:00:00",
