@@ -42,12 +42,12 @@ type TimeWindow struct {
 }
 
 type TimeZone struct {
-	Bias         int  `xml:"t:Bias"`
-	StandardTime Time `xml:"t:StandardTime"`
-	DaylightTime Time `xml:"t:DaylightTime"`
+	Bias         int          `xml:"t:Bias"`
+	StandardTime TimeZoneTime `xml:"t:StandardTime"`
+	DaylightTime TimeZoneTime `xml:"t:DaylightTime"`
 }
 
-type Time struct {
+type TimeZoneTime struct {
 	Bias      int    `xml:"t:Bias"`
 	Time      string `xml:"t:Time"`
 	DayOrder  int16  `xml:"t:DayOrder"`
@@ -166,8 +166,8 @@ type CalendarEventArray struct {
 }
 
 type CalendarEvent struct {
-	StartTime            time.Time            `xml:"StartTime"`
-	EndTime              time.Time            `xml:"EndTime"`
+	StartTime            Time                 `xml:"StartTime"`
+	EndTime              Time                 `xml:"EndTime"`
 	BusyType             string               `xml:"BusyType"`
 	CalendarEventDetails CalendarEventDetails `xml:"CalendarEventDetails"`
 }

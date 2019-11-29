@@ -27,14 +27,14 @@ func Test_marshal_GetUserAvailabilityRequest(t *testing.T) {
 	req := GetUserAvailabilityRequest{
 		TimeZone: TimeZone{
 			Bias: 480,
-			StandardTime: Time{
+			StandardTime: TimeZoneTime{
 				Bias:      0,
 				Time:      "02:00:00",
 				DayOrder:  5,
 				Month:     10,
 				DayOfWeek: "Sunday",
 			},
-			DaylightTime: Time{
+			DaylightTime: TimeZoneTime{
 				Bias:      -60,
 				Time:      "02:00:00",
 				DayOrder:  1,

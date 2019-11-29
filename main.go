@@ -23,7 +23,7 @@ func main() {
 	err := testGetUserAvailability(c)
 
 	if err != nil {
-		log.Fatal("err: ", err.Error())
+		log.Fatal("err>: ", err.Error())
 	}
 
 	fmt.Println("--- success ---")
@@ -89,14 +89,14 @@ func testGetUserAvailability(c *ews.Client) error {
 	req := &ews.GetUserAvailabilityRequest{
 		TimeZone: ews.TimeZone{
 			Bias: -180,
-			StandardTime: ews.Time{
+			StandardTime: ews.TimeZoneTime{
 				Bias:      0,
 				Time:      "02:00:00",
 				DayOrder:  5,
 				Month:     10,
 				DayOfWeek: "Sunday",
 			},
-			DaylightTime: ews.Time{
+			DaylightTime: ews.TimeZoneTime{
 				Bias:      0,
 				Time:      "02:00:00",
 				DayOrder:  1,
