@@ -25,7 +25,9 @@ func main() {
 
 	//err := testListUsersEvents(c)
 
-	err := testCreateEvent(c)
+	//err := testCreateEvent(c)
+
+	err := testGetRoomLists(c)
 
 	if err != nil {
 		log.Fatal("err>: ", err.Error())
@@ -165,4 +167,14 @@ func testCreateEvent(c *ews.Client) error {
 		time.Now().Add(24*time.Hour),
 		30*time.Minute,
 	)
+}
+
+func testGetRoomLists(c *ews.Client) error {
+	response, err := ews.GetRoomLists(c)
+	if err != nil {
+		return err
+	}
+	fmt.Println(response)
+
+	return nil
 }

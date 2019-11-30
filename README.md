@@ -45,6 +45,7 @@ func main() {
 |                                  	| CreateItem operation 	| ✔️ (Email & Calendar)|
 | Availability operations          	|                      	|                  	|
 |                                  	| GetUserAvailability  	| ✔️             	|
+|                                  	| GetRoomLists      	| ✔️             	|
 | Bulk transfer operations         	|                      	|                  	|
 | Delegate management operations   	|                      	|                  	|
 | Inbox rules operations           	|                      	|                  	|
