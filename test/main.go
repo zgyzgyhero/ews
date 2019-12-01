@@ -10,7 +10,7 @@ import (
 
 func main() {
 
-	c := ews.NewClientWithConfig(
+	c := ews.NewClient(
 		"https://outlook.office365.com/EWS/Exchange.asmx",
 		"example@mhewedy.onmicrosoft.com",
 		"systemsystem@123",

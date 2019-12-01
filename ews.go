@@ -34,13 +34,7 @@ type Client struct {
 	config   *Config
 }
 
-func NewClient(ewsAddr, username, password string) *Client {
-	return NewClientWithConfig(ewsAddr, username, password,
-		&Config{Dump: false},
-	)
-}
-
-func NewClientWithConfig(ewsAddr, username, password string, config *Config) *Client {
+func NewClient(ewsAddr, username, password string, config *Config) *Client {
 	return &Client{
 		EWSAddr:  ewsAddr,
 		Username: username,
