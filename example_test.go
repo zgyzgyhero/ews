@@ -5,10 +5,11 @@ import (
 	. "github.com/mhewedy/ews"
 	"github.com/mhewedy/ews/ewsutil"
 	"log"
+	"testing"
 	"time"
 )
 
-func Example() {
+func Test_Example(t *testing.T) {
 
 	c := NewClient(
 		"https://outlook.office365.com/EWS/Exchange.asmx",
