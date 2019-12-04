@@ -1,4 +1,4 @@
-package main
+package ews_test
 
 import (
 	"fmt"
@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-func main() {
+func Example() {
 
 	c := ews.NewClient(
 		"https://outlook.office365.com/EWS/Exchange.asmx",
