@@ -43,6 +43,7 @@ func main() {
 | eDiscovery operations            	|                      	|                  	|
 | Exchange mailbox data operations 	|                      	|                  	|
 |                                  	| CreateItem operation 	| ✔️ (Email & Calendar)|
+|                                  	| GetUserPhoto      	| ✔️                |
 | Availability operations          	|                      	|                  	|
 |                                  	| GetUserAvailability  	| ✔️             	|
 |                                  	| GetRoomLists      	| ✔️             	|
@@ -70,6 +71,9 @@ Besides the operations supported above, few new operations under the namespace `
 * `ewsutil.CreateEvent`
 * `ewsutil.ListUsersEvents`
 * `ewsutil.FindPeople`
+* `ewsutil.GetUserPhoto`
+* `ewsutil.GetUserPhotoBase64`
+* `ewsutil.GetUserPhotoURL`
 
 #### Reference:
 https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/ews-operations-in-exchange

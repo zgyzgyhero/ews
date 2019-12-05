@@ -4,8 +4,10 @@ import (
 	"fmt"
 	. "github.com/mhewedy/ews"
 	"github.com/mhewedy/ews/ewsutil"
+	"io/ioutil"
 	"log"
 	"math"
+	"os"
 	"testing"
 	"time"
 )
@@ -31,7 +33,9 @@ func Test_Example(t *testing.T) {
 
 	//err := testGetRoomLists(c)
 
-	err := testFindPeople(c)
+	//err := testFindPeople(c)
+
+	err := testGetUserPhoto(c)
 
 	if err != nil {
 		log.Fatal("err>: ", err.Error())
@@ -211,4 +215,18 @@ func testFindPeople(c *Client) error {
 	fmt.Println(resp)
 
 	return nil
+}
+
+func testGetUserPhoto(c *Client) error {
+
+	bytes, err := ewsutil.GetUserPhoto(c, "mhewedy@mhewedy.onmicrosoft.com")
+
+	if err != nil {
+		return err
+	}
+
+	err = ioutil.WriteFile("/tmp/file.png", bytes, os.ModePerm)
+	fmt.Println("written to: /tmp/file.png")
+
+	return err
 }
