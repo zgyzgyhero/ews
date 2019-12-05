@@ -1,6 +1,9 @@
 package ews
 
-import "encoding/xml"
+import (
+	"encoding/xml"
+	"errors"
+)
 
 type BaseShape string
 
@@ -62,11 +65,31 @@ type findPeopleResponseBody struct {
 
 type FindPeopleResponse struct {
 	Response
+	People                    People `xml:"People"`
+	TotalNumberOfPeopleInView int    `xml:"TotalNumberOfPeopleInView"`
+	FirstMatchingRowIndex     int    `xml:"FirstMatchingRowIndex"`
+	FirstLoadedRowIndex       int    `xml:"FirstLoadedRowIndex"`
+}
+
+type People struct {
+	Persona []Persona `xml:"Persona"`
+}
+
+type Persona struct {
+	PersonaId      PersonaId    `xml:"PersonaId"`
+	DisplayName    string       `xml:"DisplayName"`
+	Title          string       `xml:"Title"`
+	EmailAddress   EmailAddress `xml:"EmailAddress"`
+	RelevanceScore int          `xml:"RelevanceScore"`
+}
+
+type PersonaId struct {
+	Id string `xml:"Id,attr"`
 }
 
 // GetUserAvailability
 //https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/findpeople-operation
-func FindPeople(c *Client, r *FindPeopleRequest) ([]byte, error) {
+func FindPeople(c *Client, r *FindPeopleRequest) (*FindPeopleResponse, error) {
 
 	xmlBytes, err := xml.MarshalIndent(r, "", "  ")
 	if err != nil {
@@ -78,60 +101,15 @@ func FindPeople(c *Client, r *FindPeopleRequest) ([]byte, error) {
 		return nil, err
 	}
 
-	return bb, nil
+	var soapResp findPeopleResponseEnvelop
+	err = xml.Unmarshal(bb, &soapResp)
+	if err != nil {
+		return nil, err
+	}
+
+	if soapResp.Body.FindPeopleResponse.ResponseClass == ResponseClassError {
+		return nil, errors.New(soapResp.Body.FindPeopleResponse.MessageText)
+	}
+
+	return &soapResp.Body.FindPeopleResponse, nil
 }
-
-/*
-Error:
-
-<FindPeopleResponse ResponseClass="Error"
-	xmlns="http://schemas.microsoft.com/exchange/services/2006/messages"
-	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-	<MessageText>The distinguished folder name is unrecognized.</MessageText>
-	<ResponseCode>ErrorInvalidOperation</ResponseCode>
-	<DescriptiveLinkKey>0</DescriptiveLinkKey>
-	<TotalNumberOfPeopleInView>0</TotalNumberOfPeopleInView>
-	<FirstMatchingRowIndex>0</FirstMatchingRowIndex>
-	<FirstLoadedRowIndex>0</FirstLoadedRowIndex>
-</FindPeopleResponse>
-*/
-
-/*
-Success:
-
-<?xml version="1.0" encoding="utf-8"?>
-<s:Envelope
-    xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
-    <s:Header>
-        <h:ServerVersionInfo MajorVersion="15" MinorVersion="20" MajorBuildNumber="2516" MinorBuildNumber="14" Version="V2018_01_08"
-            xmlns:h="http://schemas.microsoft.com/exchange/services/2006/types"
-            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
-	</s:Header>
-	<s:Body>
-		<FindPeopleResponse ResponseClass="Success"
-			xmlns="http://schemas.microsoft.com/exchange/services/2006/messages"
-			xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-			xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-			<ResponseCode>NoError</ResponseCode>
-			<People>
-				<Persona
-					xmlns="http://schemas.microsoft.com/exchange/services/2006/types">
-					<PersonaId Id="AAUQAGHfugdjTjxHlguGvV8GwuA="/>
-					<EmailAddress>
-						<Name>Mohammed Hewedy</Name>
-						<EmailAddress>mhewedy@mhewedy.onmicrosoft.com</EmailAddress>
-						<RoutingType>SMTP</RoutingType>
-						<MailboxType>Mailbox</MailboxType>
-					</EmailAddress>
-					<RelevanceScore>2147483647</RelevanceScore>
-				</Persona>
-			</People>
-			<TotalNumberOfPeopleInView>0</TotalNumberOfPeopleInView>
-			<FirstMatchingRowIndex>0</FirstMatchingRowIndex>
-			<FirstLoadedRowIndex>0</FirstLoadedRowIndex>
-		</FindPeopleResponse>
-	</s:Body>
-</s:Envelope>
-*/

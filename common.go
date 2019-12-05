@@ -20,6 +20,14 @@ type Response struct {
 	MessageXml    MessageXml    `xml:"MessageXml"`
 }
 
+type EmailAddress struct {
+	Name         string `xml:"Name"`
+	EmailAddress string `xml:"EmailAddress"`
+	RoutingType  string `xml:"RoutingType"`
+	MailboxType  string `xml:"MailboxType"`
+	ItemId       ItemId `xml:"ItemId"`
+}
+
 type MessageXml struct {
 	ExceptionType       string `xml:"ExceptionType"`
 	ExceptionCode       string `xml:"ExceptionCode"`

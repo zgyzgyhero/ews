@@ -12,15 +12,7 @@ type GetRoomListsResponse struct {
 }
 
 type RoomLists struct {
-	Address []Address `xml:"Address"`
-}
-
-type Address struct {
-	Name         string `xml:"Name"`
-	EmailAddress string `xml:"EmailAddress"`
-	RoutingType  string `xml:"RoutingType"`
-	MailboxType  string `xml:"MailboxType"`
-	ItemId       ItemId `xml:"ItemId"`
+	Address []EmailAddress `xml:"Address"`
 }
 
 type ItemId struct {
