@@ -54,6 +54,7 @@ func main() {
 | Message tracking operations      	|                      	|                  	|
 | Notification operations          	|                      	|                  	|
 | Persona operations               	|                      	|                  	|
+|                                   | FindPeople            | ✔️             	|
 | Retention policy operation       	|                      	|                  	|
 | Service configuration operation  	|                      	|                  	|
 | Sharing operations               	|                      	|                  	|
@@ -68,6 +69,7 @@ Besides the operations supported above, few new operations under the namespace `
 * `ewsutil.SendEmail` 
 * `ewsutil.CreateEvent`
 * `ewsutil.ListUsersEvents`
+* `ewsutil.FindPeople`
 
 #### Reference:
 https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/ews-operations-in-exchange
