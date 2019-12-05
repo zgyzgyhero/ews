@@ -155,7 +155,7 @@ func Test_unmarshal_GetUserAvailabilityResponse(t *testing.T) {
 	}
 
 	assert.Equal(t,
-		"Error",
+		ResponseClassError,
 		resp.Body.GetUserAvailabilityResponse.FreeBusyResponseArray.FreeBusyResponse[0].
 			ResponseMessage.ResponseClass,
 	)

@@ -5,11 +5,19 @@ import (
 	"time"
 )
 
+type ResponseClass string
+
+const (
+	ResponseClassSuccess ResponseClass = "Success"
+	ResponseClassWarning ResponseClass = "Warning"
+	ResponseClassError   ResponseClass = "Error"
+)
+
 type Response struct {
-	ResponseClass string     `xml:"ResponseClass,attr"`
-	MessageText   string     `xml:"MessageText"`
-	ResponseCode  string     `xml:"ResponseCode"`
-	MessageXml    MessageXml `xml:"MessageXml"`
+	ResponseClass ResponseClass `xml:"ResponseClass,attr"`
+	MessageText   string        `xml:"MessageText"`
+	ResponseCode  string        `xml:"ResponseCode"`
+	MessageXml    MessageXml    `xml:"MessageXml"`
 }
 
 type MessageXml struct {
