@@ -223,13 +223,14 @@ func GetUserAvailability(c *Client, r *GetUserAvailabilityRequest) (*GetUserAvai
 	return &resp, nil
 }
 
-// TODO change to check all elements in the array not just the first element
 func checkForFunctionalError(resp *GetUserAvailabilityResponse) error {
-	if len(resp.FreeBusyResponseArray.FreeBusyResponse) > 0 &&
-		resp.FreeBusyResponseArray.FreeBusyResponse[0].ResponseMessage.ResponseClass == ResponseClassError {
-		return errors.New(
-			resp.FreeBusyResponseArray.FreeBusyResponse[0].ResponseMessage.MessageXml.ExceptionMessage,
-		)
+
+	if len(resp.FreeBusyResponseArray.FreeBusyResponse) > 0 {
+		for _, rr := range resp.FreeBusyResponseArray.FreeBusyResponse {
+			if rr.ResponseMessage.ResponseClass == ResponseClassError {
+				return errors.New(rr.ResponseMessage.MessageText)
+			}
+		}
 	}
 	return nil
 }
