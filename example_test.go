@@ -190,8 +190,13 @@ func testFindPeople(c *Client) error {
 		BasePoint:          BasePointBeginning,
 	}, ParentFolderId: ParentFolderId{
 		DistinguishedFolderId: DistinguishedFolderId{Id: "directory"}},
-		PersonaShape: &PersonaShape{BaseShape: BaseShapeIdOnly},
-		QueryString:  "hewedy",
+		PersonaShape: &PersonaShape{BaseShape: BaseShapeIdOnly,
+			AdditionalProperties: AdditionalProperties{
+				FieldURI: []FieldURI{
+					{FieldURI: "persona:EmailAddress"},
+				},
+			}},
+		QueryString: "hewedy",
 	}
 
 	_, err := FindPeople(c, req)
