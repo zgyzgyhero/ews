@@ -5,6 +5,12 @@ import (
 	"time"
 )
 
+type DistinguishedFolderId struct {
+	// List of values:
+	// https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/distinguishedfolderid
+	Id string `xml:"Id,attr"`
+}
+
 type Time string
 
 func (t Time) ToTime() (time.Time, error) {

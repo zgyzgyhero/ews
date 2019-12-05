@@ -15,7 +15,7 @@ const (
 		xmlns:t="http://schemas.microsoft.com/exchange/services/2006/types" 
 		xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
   		<soap:Header>
-    		<t:RequestServerVersion Version="Exchange2010_SP1" />
+    		<t:RequestServerVersion Version="Exchange2013_SP1" />
   		</soap:Header>
   		<soap:Body>
 `

@@ -22,10 +22,6 @@ type SavedItemFolderId struct {
 	DistinguishedFolderId DistinguishedFolderId `xml:"t:DistinguishedFolderId"`
 }
 
-type DistinguishedFolderId struct {
-	Id string `xml:"Id,attr"`
-}
-
 type Message struct {
 	ItemClass    string     `xml:"t:ItemClass"`
 	Subject      string     `xml:"t:Subject"`

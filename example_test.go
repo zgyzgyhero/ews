@@ -28,7 +28,9 @@ func Test_Example(t *testing.T) {
 
 	//err := testCreateEvent(c)
 
-	err := testGetRoomLists(c)
+	//err := testGetRoomLists(c)
+
+	err := testFindPeople(c)
 
 	if err != nil {
 		log.Fatal("err>: ", err.Error())
@@ -176,6 +178,27 @@ func testGetRoomLists(c *Client) error {
 		return err
 	}
 	fmt.Println(response)
+
+	return nil
+}
+
+func testFindPeople(c *Client) error {
+
+	req := &FilePeopleRequest{IndexedPageItemView: IndexedPageItemView{
+		MaxEntriesReturned: 5000,
+		Offset:             0,
+		BasePoint:          BasePointBeginning,
+	}, ParentFolderId: ParentFolderId{
+		DistinguishedFolderId: DistinguishedFolderId{Id: "directory"}},
+		PersonaShape: &PersonaShape{BaseShape: BaseShapeIdOnly},
+		QueryString:  "hewedy",
+	}
+
+	_, err := FindPeople(c, req)
+
+	if err != nil {
+		return err
+	}
 
 	return nil
 }
