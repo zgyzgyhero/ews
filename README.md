@@ -38,7 +38,7 @@ func main() {
 
 ### Supported Feature matrix:
 
-| Category                         	| Operation            	| Supported        	|
+| Category                         	| Operation            	| Supported*       	|
 |----------------------------------	|----------------------	|------------------	|
 | eDiscovery operations            	|                      	|                  	|
 | Exchange mailbox data operations 	|                      	|                  	|
@@ -64,6 +64,8 @@ func main() {
 | Unified Messaging operations     	|                      	|                  	|
 | Unified Contact Store operations 	|                      	|                  	|
 | User configuration operations    	|                      	|                  	|
+
+* Not always 100% of fields are mapped.
 
 ### Extras
 Besides the operations supported above, few new operations under the namespace `ewsutil` has been introduced:
