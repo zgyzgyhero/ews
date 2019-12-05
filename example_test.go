@@ -5,6 +5,7 @@ import (
 	. "github.com/mhewedy/ews"
 	"github.com/mhewedy/ews/ewsutil"
 	"log"
+	"math"
 	"testing"
 	"time"
 )
@@ -184,8 +185,8 @@ func testGetRoomLists(c *Client) error {
 
 func testFindPeople(c *Client) error {
 
-	req := &FilePeopleRequest{IndexedPageItemView: IndexedPageItemView{
-		MaxEntriesReturned: 5000,
+	req := &FindPeopleRequest{IndexedPageItemView: IndexedPageItemView{
+		MaxEntriesReturned: math.MaxInt32,
 		Offset:             0,
 		BasePoint:          BasePointBeginning,
 	}, ParentFolderId: ParentFolderId{
@@ -193,10 +194,12 @@ func testFindPeople(c *Client) error {
 		PersonaShape: &PersonaShape{BaseShape: BaseShapeIdOnly,
 			AdditionalProperties: AdditionalProperties{
 				FieldURI: []FieldURI{
+					{FieldURI: "persona:DisplayName"},
+					{FieldURI: "persona:Title"},
 					{FieldURI: "persona:EmailAddress"},
 				},
 			}},
-		QueryString: "hewedy",
+		QueryString: "ex",
 	}
 
 	_, err := FindPeople(c, req)

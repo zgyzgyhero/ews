@@ -17,7 +17,7 @@ const (
 	BasePointEnd       BasePoint = "End"
 )
 
-type FilePeopleRequest struct {
+type FindPeopleRequest struct {
 	XMLName             struct{}            `xml:"m:FindPeople"`
 	PersonaShape        *PersonaShape       `xml:"m:PersonaShape,omitempty"`
 	IndexedPageItemView IndexedPageItemView `xml:"m:IndexedPageItemView"`
@@ -54,7 +54,7 @@ type ParentFolderId struct {
 
 // GetUserAvailability
 //https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/findpeople-operation
-func FindPeople(c *Client, r *FilePeopleRequest) ([]byte, error) {
+func FindPeople(c *Client, r *FindPeopleRequest) ([]byte, error) {
 
 	xmlBytes, err := xml.MarshalIndent(r, "", "  ")
 	if err != nil {
