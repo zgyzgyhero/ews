@@ -52,6 +52,18 @@ type ParentFolderId struct {
 	DistinguishedFolderId DistinguishedFolderId `xml:"t:DistinguishedFolderId"`
 }
 
+type findPeopleResponseEnvelop struct {
+	XMLName struct{}               `xml:"Envelope"`
+	Body    findPeopleResponseBody `xml:"Body"`
+}
+type findPeopleResponseBody struct {
+	FindPeopleResponse FindPeopleResponse `xml:"FindPeopleResponse"`
+}
+
+type FindPeopleResponse struct {
+	Response
+}
+
 // GetUserAvailability
 //https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/findpeople-operation
 func FindPeople(c *Client, r *FindPeopleRequest) ([]byte, error) {

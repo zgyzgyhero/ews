@@ -7,9 +7,8 @@ type GetRoomListsRequest struct {
 }
 
 type GetRoomListsResponse struct {
-	ResponseClass string    `xml:"ResponseClass,attr"`
-	ResponseCode  string    `xml:"ResponseCode"`
-	RoomLists     RoomLists `xml:"RoomLists"`
+	Response
+	RoomLists RoomLists `xml:"RoomLists"`
 }
 
 type RoomLists struct {

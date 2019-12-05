@@ -25,13 +25,13 @@ func Test_Example(t *testing.T) {
 
 	//err := testGetUserAvailability(c)
 
-	//err := testListUsersEvents(c)
+	err := testListUsersEvents(c)
 
 	//err := testCreateEvent(c)
 
 	//err := testGetRoomLists(c)
 
-	err := testFindPeople(c)
+	//err := testFindPeople(c)
 
 	if err != nil {
 		log.Fatal("err>: ", err.Error())

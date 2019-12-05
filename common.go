@@ -5,6 +5,20 @@ import (
 	"time"
 )
 
+type Response struct {
+	ResponseClass string     `xml:"ResponseClass,attr"`
+	MessageText   string     `xml:"MessageText"`
+	ResponseCode  string     `xml:"ResponseCode"`
+	MessageXml    MessageXml `xml:"MessageXml"`
+}
+
+type MessageXml struct {
+	ExceptionType       string `xml:"ExceptionType"`
+	ExceptionCode       string `xml:"ExceptionCode"`
+	ExceptionServerName string `xml:"ExceptionServerName"`
+	ExceptionMessage    string `xml:"ExceptionMessage"`
+}
+
 type DistinguishedFolderId struct {
 	// List of values:
 	// https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/distinguishedfolderid

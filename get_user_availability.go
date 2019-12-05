@@ -137,18 +137,8 @@ type FreeBusyResponse struct {
 }
 
 type ResponseMessage struct {
-	ResponseClass      string     `xml:"ResponseClass,attr"`
-	MessageText        string     `xml:"MessageText"`
-	ResponseCode       string     `xml:"ResponseCode"`
-	DescriptiveLinkKey int        `xml:"DescriptiveLinkKey"`
-	MessageXml         MessageXml `xml:"MessageXml"`
-}
-
-type MessageXml struct {
-	ExceptionType       string `xml:"ExceptionType"`
-	ExceptionCode       string `xml:"ExceptionCode"`
-	ExceptionServerName string `xml:"ExceptionServerName"`
-	ExceptionMessage    string `xml:"ExceptionMessage"`
+	Response
+	DescriptiveLinkKey int `xml:"DescriptiveLinkKey"`
 }
 
 type FreeBusyView struct {
@@ -233,6 +223,7 @@ func GetUserAvailability(c *Client, r *GetUserAvailabilityRequest) (*GetUserAvai
 	return &resp, nil
 }
 
+// TODO change to check all elements in the array not just the first element
 func checkForFunctionalError(resp *GetUserAvailabilityResponse) error {
 	if len(resp.FreeBusyResponseArray.FreeBusyResponse) > 0 &&
 		resp.FreeBusyResponseArray.FreeBusyResponse[0].ResponseMessage.ResponseClass == "Error" {
