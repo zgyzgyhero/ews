@@ -83,7 +83,7 @@ func CreateMessageItem(c Client, m ...Message) error {
 		return err
 	}
 
-	_, err = c.sendAndReceive(xmlBytes)
+	_, err = c.SendAndReceive(xmlBytes)
 	if err != nil {
 		return err
 	}
@@ -105,7 +105,7 @@ func CreateCalendarItem(c Client, ci ...CalendarItem) error {
 		return err
 	}
 
-	_, err = c.sendAndReceive(xmlBytes)
+	_, err = c.SendAndReceive(xmlBytes)
 	if err != nil {
 		return err
 	}

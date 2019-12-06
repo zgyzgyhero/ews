@@ -96,7 +96,7 @@ func FindPeople(c Client, r *FindPeopleRequest) (*FindPeopleResponse, error) {
 		return nil, err
 	}
 
-	bb, err := c.sendAndReceive(xmlBytes)
+	bb, err := c.SendAndReceive(xmlBytes)
 	if err != nil {
 		return nil, err
 	}

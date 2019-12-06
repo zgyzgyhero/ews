@@ -202,7 +202,7 @@ func GetUserAvailability(c Client, r *GetUserAvailabilityRequest) (*GetUserAvail
 		return nil, err
 	}
 
-	bb, err := c.sendAndReceive(xmlBytes)
+	bb, err := c.SendAndReceive(xmlBytes)
 	if err != nil {
 		return nil, err
 	}

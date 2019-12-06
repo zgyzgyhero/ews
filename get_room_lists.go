@@ -35,7 +35,7 @@ func GetRoomLists(c Client) (*GetRoomListsResponse, error) {
 		return nil, err
 	}
 
-	bb, err := c.sendAndReceive(xmlBytes)
+	bb, err := c.SendAndReceive(xmlBytes)
 	if err != nil {
 		return nil, err
 	}

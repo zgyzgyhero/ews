@@ -28,7 +28,7 @@ type Config struct {
 }
 
 type Client interface {
-	sendAndReceive(body []byte) ([]byte, error)
+	SendAndReceive(body []byte) ([]byte, error)
 	GetEWSAddr() string
 	GetUsername() string
 }
@@ -57,7 +57,7 @@ func NewClient(ewsAddr, username, password string, config *Config) Client {
 	}
 }
 
-func (c *client) sendAndReceive(body []byte) ([]byte, error) {
+func (c *client) SendAndReceive(body []byte) ([]byte, error) {
 
 	bb := []byte(soapStart)
 	bb = append(bb, body...)
