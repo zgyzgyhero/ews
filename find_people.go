@@ -89,7 +89,7 @@ type PersonaId struct {
 
 // GetUserAvailability
 //https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/findpeople-operation
-func FindPeople(c *Client, r *FindPeopleRequest) (*FindPeopleResponse, error) {
+func FindPeople(c Client, r *FindPeopleRequest) (*FindPeopleResponse, error) {
 
 	xmlBytes, err := xml.MarshalIndent(r, "", "  ")
 	if err != nil {

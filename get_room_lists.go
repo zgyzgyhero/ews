@@ -28,7 +28,7 @@ type getRoomListsResponseBody struct {
 	GetRoomListsResponse GetRoomListsResponse `xml:"GetRoomListsResponse"`
 }
 
-func GetRoomLists(c *Client) (*GetRoomListsResponse, error) {
+func GetRoomLists(c Client) (*GetRoomListsResponse, error) {
 
 	xmlBytes, err := xml.MarshalIndent(&GetRoomListsRequest{}, "", "  ")
 	if err != nil {

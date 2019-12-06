@@ -7,7 +7,7 @@ import (
 
 // CreateEvent helper method to send Message
 func CreateEvent(
-	c *ews.Client, to []string, subject, body, location string, from time.Time, duration time.Duration,
+	c ews.Client, to []string, subject, body, location string, from time.Time, duration time.Duration,
 ) error {
 
 	attendee := make([]ews.Attendee, len(to))

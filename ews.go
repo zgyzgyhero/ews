@@ -27,15 +27,29 @@ type Config struct {
 	Dump bool
 }
 
-type Client struct {
+type Client interface {
+	sendAndReceive(body []byte) ([]byte, error)
+	GetEWSAddr() string
+	GetUsername() string
+}
+
+type client struct {
 	EWSAddr  string
 	Username string
 	Password string
 	config   *Config
 }
 
-func NewClient(ewsAddr, username, password string, config *Config) *Client {
-	return &Client{
+func (c *client) GetEWSAddr() string {
+	return c.EWSAddr
+}
+
+func (c *client) GetUsername() string {
+	return c.Username
+}
+
+func NewClient(ewsAddr, username, password string, config *Config) Client {
+	return &client{
 		EWSAddr:  ewsAddr,
 		Username: username,
 		Password: password,
@@ -43,7 +57,7 @@ func NewClient(ewsAddr, username, password string, config *Config) *Client {
 	}
 }
 
-func (c *Client) sendAndReceive(body []byte) ([]byte, error) {
+func (c *client) sendAndReceive(body []byte) ([]byte, error) {
 
 	bb := []byte(soapStart)
 	bb = append(bb, body...)
@@ -83,7 +97,7 @@ func (c *Client) sendAndReceive(body []byte) ([]byte, error) {
 	return respBytes, err
 }
 
-func logRequest(c *Client, req *http.Request) {
+func logRequest(c *client, req *http.Request) {
 	if c.config != nil && c.config.Dump {
 		dump, err := httputil.DumpRequestOut(req, true)
 		if err != nil {
@@ -93,7 +107,7 @@ func logRequest(c *Client, req *http.Request) {
 	}
 }
 
-func logResponse(c *Client, resp *http.Response) {
+func logResponse(c *client, resp *http.Response) {
 	if c.config != nil && c.config.Dump {
 		dump, err := httputil.DumpResponse(resp, true)
 		if err != nil {

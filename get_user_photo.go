@@ -27,7 +27,7 @@ type getUserPhotoResponseBody struct {
 
 // GetUserPhoto
 //https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getuserphoto-operation
-func GetUserPhoto(c *Client, r *GetUserPhotoRequest) (*GetUserPhotoResponse, error) {
+func GetUserPhoto(c Client, r *GetUserPhotoRequest) (*GetUserPhotoResponse, error) {
 
 	xmlBytes, err := xml.MarshalIndent(r, "", "  ")
 	if err != nil {

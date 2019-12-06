@@ -6,7 +6,7 @@ import (
 )
 
 // FindPeople find persona slice by query string
-func FindPeople(c *ews.Client, q string) ([]ews.Persona, error) {
+func FindPeople(c ews.Client, q string) ([]ews.Persona, error) {
 
 	req := &ews.FindPeopleRequest{IndexedPageItemView: ews.IndexedPageItemView{
 		MaxEntriesReturned: math.MaxInt32,

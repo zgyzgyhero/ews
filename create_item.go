@@ -70,7 +70,7 @@ type Attendees struct {
 
 // CreateMessageItem
 // https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/createitem-operation-email-message
-func CreateMessageItem(c *Client, m ...Message) error {
+func CreateMessageItem(c Client, m ...Message) error {
 
 	item := &CreateItem{
 		MessageDisposition: "SendAndSaveCopy",
@@ -92,7 +92,7 @@ func CreateMessageItem(c *Client, m ...Message) error {
 
 // CreateCalendarItem
 // https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/createitem-operation-calendar-item
-func CreateCalendarItem(c *Client, ci ...CalendarItem) error {
+func CreateCalendarItem(c Client, ci ...CalendarItem) error {
 
 	item := &CreateItem{
 		SendMeetingInvitations: "SendToAllAndSaveCopy",

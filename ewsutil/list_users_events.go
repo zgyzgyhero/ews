@@ -17,7 +17,7 @@ type Event struct {
 }
 
 func ListUsersEvents(
-	c *ews.Client, eventUsers []EventUser, from time.Time, duration time.Duration,
+	c ews.Client, eventUsers []EventUser, from time.Time, duration time.Duration,
 ) ([]Event, error) {
 
 	req := buildGetUserAvailabilityRequest(eventUsers, from, duration)

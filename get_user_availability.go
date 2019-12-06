@@ -195,7 +195,7 @@ type getUserAvailabilityResponseBody struct {
 
 // GetUserAvailability
 //https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getuseravailability-operation
-func GetUserAvailability(c *Client, r *GetUserAvailabilityRequest) (*GetUserAvailabilityResponse, error) {
+func GetUserAvailability(c Client, r *GetUserAvailabilityRequest) (*GetUserAvailabilityResponse, error) {
 
 	xmlBytes, err := xml.MarshalIndent(r, "", "  ")
 	if err != nil {

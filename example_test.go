@@ -44,7 +44,7 @@ func Test_Example(t *testing.T) {
 	fmt.Println("--- success ---")
 }
 
-func testSendEmail(c *Client) error {
+func testSendEmail(c Client) error {
 	return ewsutil.SendEmail(c,
 		[]string{"mhewedy@gmail.com", "someone@else.com"},
 		"An email subject",
@@ -52,7 +52,7 @@ func testSendEmail(c *Client) error {
 	)
 }
 
-func testCreateCalendarItem(c *Client) error {
+func testCreateCalendarItem(c Client) error {
 	attendee := make([]Attendee, 0)
 	attendee = append(attendee,
 		Attendee{Mailbox: Mailbox{EmailAddress: "mhewedy@mhewedy.onmicrosoft.com"}},
@@ -77,7 +77,7 @@ func testCreateCalendarItem(c *Client) error {
 	})
 }
 
-func testGetUserAvailability(c *Client) error {
+func testGetUserAvailability(c Client) error {
 
 	mb := make([]MailboxData, 0)
 	mb = append(mb, MailboxData{
@@ -140,7 +140,7 @@ func testGetUserAvailability(c *Client) error {
 	return nil
 }
 
-func testListUsersEvents(c *Client) error {
+func testListUsersEvents(c Client) error {
 
 	eventUsers := []ewsutil.EventUser{
 		{
@@ -165,7 +165,7 @@ func testListUsersEvents(c *Client) error {
 	return nil
 }
 
-func testCreateEvent(c *Client) error {
+func testCreateEvent(c Client) error {
 
 	return ewsutil.CreateEvent(c,
 		[]string{"mhewedy@mhewedy.onmicrosoft.com", "example2@mhewedy.onmicrosoft.com"},
@@ -177,7 +177,7 @@ func testCreateEvent(c *Client) error {
 	)
 }
 
-func testGetRoomLists(c *Client) error {
+func testGetRoomLists(c Client) error {
 	response, err := GetRoomLists(c)
 	if err != nil {
 		return err
@@ -187,7 +187,7 @@ func testGetRoomLists(c *Client) error {
 	return nil
 }
 
-func testFindPeople(c *Client) error {
+func testFindPeople(c Client) error {
 
 	req := &FindPeopleRequest{IndexedPageItemView: IndexedPageItemView{
 		MaxEntriesReturned: math.MaxInt32,
@@ -217,7 +217,7 @@ func testFindPeople(c *Client) error {
 	return nil
 }
 
-func testGetUserPhoto(c *Client) error {
+func testGetUserPhoto(c Client) error {
 
 	bytes, err := ewsutil.GetUserPhoto(c, "mhewedy@mhewedy.onmicrosoft.com")
 
