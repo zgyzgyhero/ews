@@ -2,6 +2,7 @@ package ews
 
 import (
 	"bytes"
+	"crypto/tls"
 	"fmt"
 	"github.com/Azure/go-ntlmssp"
 	"io/ioutil"
@@ -25,8 +26,9 @@ const (
 )
 
 type Config struct {
-	Dump bool
-	NTLM bool
+	Dump    bool
+	NTLM    bool
+	SkipTLS bool
 }
 
 type Client interface {
@@ -80,12 +82,7 @@ func (c *client) SendAndReceive(body []byte) ([]byte, error) {
 			return http.ErrUseLastResponse
 		},
 	}
-
-	if c.config.NTLM {
-		client.Transport = ntlmssp.Negotiator{
-			RoundTripper: &http.Transport{},
-		}
-	}
+	applyConfig(c.config, client)
 
 	resp, err := client.Do(req)
 	if err != nil {
@@ -104,6 +101,15 @@ func (c *client) SendAndReceive(body []byte) ([]byte, error) {
 	}
 
 	return respBytes, err
+}
+
+func applyConfig(config *Config, client *http.Client) {
+	if config.NTLM {
+		client.Transport = ntlmssp.Negotiator{}
+	}
+	if config.SkipTLS {
+		http.DefaultTransport.(*http.Transport).TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
+	}
 }
 
 func logRequest(c *client, req *http.Request) {

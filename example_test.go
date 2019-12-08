@@ -18,7 +18,7 @@ func Test_Example(t *testing.T) {
 		"https://outlook.office365.com/EWS/Exchange.asmx",
 		"example@mhewedy.onmicrosoft.com",
 		"systemsystem@123",
-		&Config{Dump: true, NTLM: false},
+		&Config{Dump: true, NTLM: true, SkipTLS: true},
 	)
 
 	/*c := NewClient(
