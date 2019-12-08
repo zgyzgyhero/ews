@@ -18,7 +18,7 @@ func main() {
 		"https://outlook.office365.com/EWS/Exchange.asmx",
 		"email@exchangedomain",
 		"password",
-		&ews.Config{Dump: true},
+		&ews.Config{Dump: true, NTLM: false},
 	)
 
 	err := ewsutil.SendEmail(c,
@@ -76,6 +76,8 @@ Besides the operations supported above, few new operations under the namespace `
 * `ewsutil.GetUserPhoto`
 * `ewsutil.GetUserPhotoBase64`
 * `ewsutil.GetUserPhotoURL`
+
+NTLM is supported as well as Basic authentication
 
 #### Reference:
 https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/ews-operations-in-exchange

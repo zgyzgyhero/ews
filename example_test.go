@@ -21,6 +21,13 @@ func Test_Example(t *testing.T) {
 		&Config{Dump: true, NTLM: false},
 	)
 
+	/*c := NewClient(
+		"https://mail.mycompany/EWS/Exchange.asmx",
+		"company\\user",
+		"password",
+		&Config{Dump: true, NTLM: true},
+	)*/
+
 	//err := testSendEmail(c)
 
 	//err := testCreateCalendarItem(c)
