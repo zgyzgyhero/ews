@@ -18,7 +18,7 @@ func Test_Example(t *testing.T) {
 		"https://outlook.office365.com/EWS/Exchange.asmx",
 		"example@mhewedy.onmicrosoft.com",
 		"systemsystem@123",
-		&Config{Dump: true},
+		&Config{Dump: true, NTLM: false},
 	)
 
 	//err := testSendEmail(c)
@@ -35,7 +35,9 @@ func Test_Example(t *testing.T) {
 
 	//err := testFindPeople(c)
 
-	err := testGetUserPhoto(c)
+	//err := testGetUserPhoto(c)
+
+	err := testEWSUtilFindPeople(c)
 
 	if err != nil {
 		log.Fatal("err>: ", err.Error())
@@ -229,4 +231,17 @@ func testGetUserPhoto(c Client) error {
 	fmt.Println("written to: /tmp/file.png")
 
 	return err
+}
+
+func testEWSUtilFindPeople(c Client) error {
+
+	resp, err := ewsutil.FindPeople(c, "ex")
+
+	if err != nil {
+		return err
+	}
+
+	fmt.Println(resp)
+
+	return nil
 }

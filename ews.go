@@ -3,6 +3,7 @@ package ews
 import (
 	"bytes"
 	"fmt"
+	"github.com/Azure/go-ntlmssp"
 	"io/ioutil"
 	"net/http"
 	"net/http/httputil"
@@ -25,6 +26,7 @@ const (
 
 type Config struct {
 	Dump bool
+	NTLM bool
 }
 
 type Client interface {
@@ -78,6 +80,13 @@ func (c *client) SendAndReceive(body []byte) ([]byte, error) {
 			return http.ErrUseLastResponse
 		},
 	}
+
+	if c.config.NTLM {
+		client.Transport = ntlmssp.Negotiator{
+			RoundTripper: &http.Transport{},
+		}
+	}
+
 	resp, err := client.Do(req)
 	if err != nil {
 		return nil, err
