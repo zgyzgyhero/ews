@@ -18,7 +18,7 @@ type Event struct {
 
 func ListUsersEvents(
 	c ews.Client, eventUsers []EventUser, from time.Time, duration time.Duration,
-) ([]Event, error) {
+) (map[EventUser][]Event, error) {
 
 	req := buildGetUserAvailabilityRequest(eventUsers, from, duration)
 
@@ -27,7 +27,7 @@ func ListUsersEvents(
 		return nil, err
 	}
 
-	events, err := traverseGetUserAvailabilityResponse(resp)
+	events, err := traverseGetUserAvailabilityResponse(eventUsers, resp)
 	if err != nil {
 		return nil, err
 	}
@@ -83,9 +83,14 @@ func buildGetUserAvailabilityRequest(
 	return req
 }
 
-func traverseGetUserAvailabilityResponse(resp *ews.GetUserAvailabilityResponse) ([]Event, error) {
-	ce := make([]Event, 0)
-	for _, rr := range resp.FreeBusyResponseArray.FreeBusyResponse {
+func traverseGetUserAvailabilityResponse(
+	eventUsers []EventUser, resp *ews.GetUserAvailabilityResponse,
+) (map[EventUser][]Event, error) {
+
+	m := make(map[EventUser][]Event)
+	for i, rr := range resp.FreeBusyResponseArray.FreeBusyResponse {
+
+		ce := make([]Event, 0)
 		for _, cc := range rr.FreeBusyView.CalendarEventArray.CalendarEvent {
 
 			start, err := cc.StartTime.ToTime()
@@ -104,6 +109,7 @@ func traverseGetUserAvailabilityResponse(resp *ews.GetUserAvailabilityResponse) 
 				BusyType: cc.BusyType,
 			})
 		}
+		m[eventUsers[i]] = ce
 	}
-	return ce, nil
+	return m, nil
 }

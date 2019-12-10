@@ -34,7 +34,7 @@ func Test_Example(t *testing.T) {
 
 	//err := testGetUserAvailability(c)
 
-	//err := testListUsersEvents(c)
+	err := testListUsersEvents(c)
 
 	//err := testCreateEvent(c)
 
@@ -44,7 +44,7 @@ func Test_Example(t *testing.T) {
 
 	//err := testGetUserPhoto(c)
 
-	err := testEWSUtilFindPeople(c)
+	//err := testEWSUtilFindPeople(c)
 
 	if err != nil {
 		log.Fatal("err>: ", err.Error())
@@ -157,11 +157,15 @@ func testListUsersEvents(c Client) error {
 			AttendeeType: AttendeeTypeRequired,
 		},
 		{
-			Email:        "example2@mhewedy.onmicrosoft.com",
+			Email:        "example@mhewedy.onmicrosoft.com",
 			AttendeeType: AttendeeTypeRequired,
 		},
+		{
+			Email:        "room001@mhewedy.onmicrosoft.com",
+			AttendeeType: AttendeeTypeResource,
+		},
 	}
-	start, _ := time.Parse(time.RFC3339, "2019-11-29T00:00:00Z")
+	start, _ := time.Parse(time.RFC3339, "2019-12-10T11:00:00+03:00")
 
 	events, err := ewsutil.ListUsersEvents(c, eventUsers, start, 48*time.Hour)
 
