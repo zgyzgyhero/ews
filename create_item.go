@@ -41,6 +41,7 @@ type CalendarItem struct {
 	LegacyFreeBusyStatus       string      `xml:"t:LegacyFreeBusyStatus"`
 	Location                   string      `xml:"t:Location"`
 	RequiredAttendees          []Attendees `xml:"t:RequiredAttendees"`
+	OptionalAttendees          []Attendees `xml:"t:OptionalAttendees"`
 }
 
 type Body struct {

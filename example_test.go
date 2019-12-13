@@ -182,6 +182,7 @@ func testCreateEvent(c Client) error {
 
 	return ewsutil.CreateEvent(c,
 		[]string{"mhewedy@mhewedy.onmicrosoft.com", "example2@mhewedy.onmicrosoft.com"},
+		[]string{},
 		"An Event subject",
 		"An Event body, as plain text",
 		"Room 55",
