@@ -92,7 +92,7 @@ func (c *client) SendAndReceive(body []byte) ([]byte, error) {
 	logResponse(c, resp)
 
 	if resp.StatusCode != http.StatusOK {
-		return nil, NewSoapError(resp)
+		return nil, NewError(resp)
 	}
 
 	respBytes, err := ioutil.ReadAll(resp.Body)

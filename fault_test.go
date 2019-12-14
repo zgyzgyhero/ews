@@ -141,15 +141,16 @@ func TestNewSoapError(t *testing.T) {
 		{
 			name: "test no soap fault but http error",
 			args: args{resp: &http.Response{
-				Status: "gateway error",
-				Body:   &FakeReadCloser{contents: strings.NewReader(soapMessage)}},
+				Status:     "gateway error",
+				StatusCode: http.StatusBadGateway,
+				Body:       &FakeReadCloser{contents: strings.NewReader(soapMessage)}},
 			},
-			expected: errors.New("gateway error"),
+			expected: &HTTPError{Status: "gateway error", StatusCode: http.StatusBadGateway},
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			err := NewSoapError(tt.args.resp)
+			err := NewError(tt.args.resp)
 			assert.Equal(t, tt.expected, err)
 		})
 	}

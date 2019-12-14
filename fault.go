@@ -2,30 +2,38 @@ package ews
 
 import (
 	"encoding/xml"
-	"errors"
 	"io/ioutil"
 	"net/http"
 	"strings"
 )
 
-type SoapError struct {
-	Fault *Fault
-}
-
-func NewSoapError(resp *http.Response) error {
+func NewError(resp *http.Response) error {
 	soap, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return err
 	}
 	fault, _ := parseSoapFault(string(soap))
 	if fault == nil {
-		return errors.New(resp.Status)
+		return &HTTPError{Status: resp.Status, StatusCode: resp.StatusCode}
 	}
 	return &SoapError{Fault: fault}
 }
 
+type SoapError struct {
+	Fault *Fault
+}
+
 func (s SoapError) Error() string {
 	return s.Fault.Faultstring
+}
+
+type HTTPError struct {
+	Status     string
+	StatusCode int
+}
+
+func (s HTTPError) Error() string {
+	return s.Status
 }
 
 type envelop struct {
