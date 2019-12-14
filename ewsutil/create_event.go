@@ -20,6 +20,9 @@ func CreateEvent(
 		optionalAttendees[i] = ews.Attendee{Mailbox: ews.Mailbox{EmailAddress: tt}}
 	}
 
+	room := make([]ews.Attendee, 1)
+	room[0] = ews.Attendee{Mailbox: ews.Mailbox{EmailAddress: location}}
+
 	m := ews.CalendarItem{
 		Subject: subject,
 		Body: ews.Body{
@@ -35,6 +38,7 @@ func CreateEvent(
 		Location:                   location,
 		RequiredAttendees:          []ews.Attendees{{Attendee: requiredAttendees}},
 		OptionalAttendees:          []ews.Attendees{{Attendee: optionalAttendees}},
+		Resources:                  []ews.Attendees{{Attendee: room}},
 	}
 
 	return ews.CreateCalendarItem(c, m)

@@ -42,6 +42,7 @@ type CalendarItem struct {
 	Location                   string      `xml:"t:Location"`
 	RequiredAttendees          []Attendees `xml:"t:RequiredAttendees"`
 	OptionalAttendees          []Attendees `xml:"t:OptionalAttendees"`
+	Resources                  []Attendees `xml:"t:Resources"`
 }
 
 type Body struct {
