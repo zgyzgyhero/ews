@@ -75,18 +75,6 @@ type People struct {
 	Persona []Persona `xml:"Persona"`
 }
 
-type Persona struct {
-	PersonaId      PersonaId    `xml:"PersonaId"`
-	DisplayName    string       `xml:"DisplayName"`
-	Title          string       `xml:"Title"`
-	EmailAddress   EmailAddress `xml:"EmailAddress"`
-	RelevanceScore int          `xml:"RelevanceScore"`
-}
-
-type PersonaId struct {
-	Id string `xml:"Id,attr"`
-}
-
 // GetUserAvailability
 //https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/findpeople-operation
 func FindPeople(c Client, r *FindPeopleRequest) (*FindPeopleResponse, error) {

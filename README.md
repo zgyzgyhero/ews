@@ -56,6 +56,7 @@ func main() {
 | Notification operations          	|                      	|                  	|
 | Persona operations               	|                      	|                  	|
 |                                   | FindPeople            | ✔️             	|
+|                                   | GetPersona            | ✔️             	|
 | Retention policy operation       	|                      	|                  	|
 | Service configuration operation  	|                      	|                  	|
 | Sharing operations               	|                      	|                  	|

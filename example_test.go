@@ -34,7 +34,7 @@ func Test_Example(t *testing.T) {
 
 	//err := testGetUserAvailability(c)
 
-	err := testListUsersEvents(c)
+	//err := testListUsersEvents(c)
 
 	//err := testCreateEvent(c)
 
@@ -45,6 +45,8 @@ func Test_Example(t *testing.T) {
 	//err := testGetUserPhoto(c)
 
 	//err := testEWSUtilFindPeople(c)
+
+	err := testGetPersona(c)
 
 	if err != nil {
 		log.Fatal("err>: ", err.Error())
@@ -248,6 +250,23 @@ func testGetUserPhoto(c Client) error {
 func testEWSUtilFindPeople(c Client) error {
 
 	resp, err := ewsutil.FindPeople(c, "ex")
+
+	if err != nil {
+		return err
+	}
+
+	fmt.Println(resp)
+
+	return nil
+}
+
+func testGetPersona(c Client) error {
+
+	personas, _ := ewsutil.FindPeople(c, "hewedy")
+
+	resp, err := GetPersona(c, &GetPersonaRequest{
+		PersonaId: personas[0].PersonaId,
+	})
 
 	if err != nil {
 		return err
