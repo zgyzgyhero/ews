@@ -77,6 +77,7 @@ Besides the operations supported above, few new operations under the namespace `
 * `ewsutil.GetUserPhoto`
 * `ewsutil.GetUserPhotoBase64`
 * `ewsutil.GetUserPhotoURL`
+* `ewsutil.GetPersona`
 
 NTLM is supported as well as Basic authentication
 
