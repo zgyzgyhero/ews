@@ -5,9 +5,21 @@ import (
 	"time"
 )
 
+func CreateHTMLEvent(
+	c ews.Client, to, optional []string, subject, body, location string, from time.Time, duration time.Duration,
+) error {
+	return createEvent(c, to, optional, subject, body, location, "HTML", from, duration)
+}
+
 // CreateEvent helper method to send Message
 func CreateEvent(
 	c ews.Client, to, optional []string, subject, body, location string, from time.Time, duration time.Duration,
+) error {
+	return createEvent(c, to, optional, subject, body, location, "Text", from, duration)
+}
+
+func createEvent(
+	c ews.Client, to, optional []string, subject, body, location, bodyType string, from time.Time, duration time.Duration,
 ) error {
 
 	requiredAttendees := make([]ews.Attendee, len(to))
@@ -26,7 +38,7 @@ func CreateEvent(
 	m := ews.CalendarItem{
 		Subject: subject,
 		Body: ews.Body{
-			BodyType: "Text",
+			BodyType: bodyType,
 			Body:     []byte(body),
 		},
 		ReminderIsSet:              true,

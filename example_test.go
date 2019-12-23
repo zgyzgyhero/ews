@@ -46,7 +46,9 @@ func Test_Example(t *testing.T) {
 
 	//err := testEWSUtilFindPeople(c)
 
-	err := testGetPersona(c)
+	//err := testGetPersona(c)
+
+	err := testCreateHTMLEvent(c)
 
 	if err != nil {
 		log.Fatal("err>: ", err.Error())
@@ -187,6 +189,21 @@ func testCreateEvent(c Client) error {
 		[]string{},
 		"An Event subject",
 		"An Event body, as plain text",
+		"Room 55",
+		time.Now().Add(24*time.Hour),
+		30*time.Minute,
+	)
+}
+
+func testCreateHTMLEvent(c Client) error {
+
+	return ewsutil.CreateHTMLEvent(c,
+		[]string{"mhewedy@mhewedy.onmicrosoft.com", "example@mhewedy.onmicrosoft.com"},
+		[]string{},
+		"An Event subject",
+		`An Event body, as HTML <br/><br/><br/><div style="color: gray; font-size: x-small;">
+		Sent by <a style="color: gray; text-decoration: none;" href="https://github.com/mhewedy/mego"
+		target="_blank">MEGO</a> - the meeting organizer</div>`,
 		"Room 55",
 		time.Now().Add(24*time.Hour),
 		30*time.Minute,
