@@ -46,6 +46,7 @@ type Persona struct {
 	DisplayName          string               `xml:"DisplayName"`
 	Title                string               `xml:"Title"`
 	Department           string               `xml:"Department"`
+	Departments          Departments          `xml:"Departments"`
 	EmailAddress         EmailAddress         `xml:"EmailAddress"`
 	RelevanceScore       int                  `xml:"RelevanceScore"`
 	BusinessPhoneNumbers BusinessPhoneNumbers `xml:"BusinessPhoneNumbers"`
@@ -75,6 +76,10 @@ type PhoneNumberAttributedValue struct {
 }
 
 type OfficeLocations struct {
+	StringAttributedValue StringAttributedValue `xml:"StringAttributedValue"`
+}
+
+type Departments struct {
 	StringAttributedValue StringAttributedValue `xml:"StringAttributedValue"`
 }
 

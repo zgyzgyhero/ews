@@ -16,7 +16,7 @@ func Test_Example(t *testing.T) {
 
 	c := NewClient(
 		"https://outlook.office365.com/EWS/Exchange.asmx",
-		"example@mhewedy.onmicrosoft.com",
+		"daziplqa@daziplqa.onmicrosoft.com",
 		"systemsystem@123",
 		&Config{Dump: true, NTLM: true, SkipTLS: true},
 	)
@@ -44,11 +44,11 @@ func Test_Example(t *testing.T) {
 
 	//err := testGetUserPhoto(c)
 
-	//err := testEWSUtilFindPeople(c)
+	err := testEWSUtilFindPeople(c)
 
 	//err := testGetPersona(c)
 
-	err := testCreateHTMLEvent(c)
+	//err := testCreateHTMLEvent(c)
 
 	if err != nil {
 		log.Fatal("err>: ", err.Error())
@@ -266,7 +266,7 @@ func testGetUserPhoto(c Client) error {
 
 func testEWSUtilFindPeople(c Client) error {
 
-	resp, err := ewsutil.FindPeople(c, "ex")
+	resp, err := ewsutil.FindPeople(c, "test")
 
 	if err != nil {
 		return err

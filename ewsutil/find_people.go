@@ -20,6 +20,7 @@ func FindPeople(c ews.Client, q string) ([]ews.Persona, error) {
 					{FieldURI: "persona:DisplayName"},
 					{FieldURI: "persona:Title"},
 					{FieldURI: "persona:EmailAddress"},
+					{FieldURI: "persona:Departments"},
 				},
 			}},
 		QueryString: q,
