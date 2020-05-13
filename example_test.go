@@ -5,7 +5,6 @@ import (
 	. "github.com/mhewedy/ews"
 	"github.com/mhewedy/ews/ewsutil"
 	"io/ioutil"
-	"log"
 	"math"
 	"os"
 	"testing"
@@ -44,15 +43,17 @@ func Test_Example(t *testing.T) {
 
 	//err := testGetUserPhoto(c)
 
-	err := testEWSUtilFindPeople(c)
+	//err := testEWSUtilFindPeople(c)
 
 	//err := testGetPersona(c)
 
 	//err := testCreateHTMLEvent(c)
 
-	if err != nil {
-		log.Fatal("err>: ", err.Error())
-	}
+	//if err != nil {
+	//	log.Fatal("err>: ", err.Error())
+	//}
+
+	_ = c
 
 	fmt.Println("--- success ---")
 }
