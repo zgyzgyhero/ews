@@ -35,7 +35,7 @@ func main() {
 }
 
 ```
-> Note: if you are using an on-premises Exchange server, you need to pass the username as `AD_DOMAINNAME\\username` instead, for examle `MYCOMANY\\mhewedy`.
+> Note: if you are using an on-premises Exchange server (or even if you manage your servers at the cloud), you need to pass the username as `AD_DOMAINNAME\\username` instead, for examle `MYCOMANY\\mhewedy`.
 
 ### Supported Feature matrix:
 
