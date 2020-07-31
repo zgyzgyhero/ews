@@ -2,6 +2,7 @@ package ews
 
 import (
 	"encoding/xml"
+	"errors"
 	"time"
 )
 
@@ -70,6 +71,22 @@ type Attendees struct {
 	Attendee []Attendee `xml:"t:Attendee"`
 }
 
+type createItemResponseBodyEnvelop struct {
+	XMLName struct{}               `xml:"Envelope"`
+	Body    createItemResponseBody `xml:"Body"`
+}
+type createItemResponseBody struct {
+	CreateItemResponse CreateItemResponse `xml:"CreateItemResponse"`
+}
+
+type CreateItemResponse struct {
+	ResponseMessages ResponseMessages `xml:"ResponseMessages"`
+}
+
+type ResponseMessages struct {
+	CreateItemResponseMessage Response `xml:"CreateItemResponseMessage"`
+}
+
 // CreateMessageItem
 // https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/createitem-operation-email-message
 func CreateMessageItem(c Client, m ...Message) error {
@@ -85,10 +102,15 @@ func CreateMessageItem(c Client, m ...Message) error {
 		return err
 	}
 
-	_, err = c.SendAndReceive(xmlBytes)
+	bb, err := c.SendAndReceive(xmlBytes)
 	if err != nil {
 		return err
 	}
+
+	if err := checkCreateItemResponseForErrors(bb); err != nil {
+		return err
+	}
+
 	return nil
 }
 
@@ -107,9 +129,27 @@ func CreateCalendarItem(c Client, ci ...CalendarItem) error {
 		return err
 	}
 
-	_, err = c.SendAndReceive(xmlBytes)
+	bb, err := c.SendAndReceive(xmlBytes)
 	if err != nil {
 		return err
+	}
+
+	if err := checkCreateItemResponseForErrors(bb); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func checkCreateItemResponseForErrors(bb []byte) error {
+	var soapResp createItemResponseBodyEnvelop
+	if err := xml.Unmarshal(bb, &soapResp); err != nil {
+		return err
+	}
+
+	resp := soapResp.Body.CreateItemResponse.ResponseMessages.CreateItemResponseMessage
+	if resp.ResponseClass == ResponseClassError {
+		return errors.New(resp.MessageText)
 	}
 	return nil
 }
