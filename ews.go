@@ -4,10 +4,11 @@ import (
 	"bytes"
 	"crypto/tls"
 	"fmt"
-	"github.com/Azure/go-ntlmssp"
 	"io/ioutil"
 	"net/http"
 	"net/http/httputil"
+
+	"github.com/Azure/go-ntlmssp"
 )
 
 const (
@@ -17,7 +18,7 @@ const (
 		xmlns:t="http://schemas.microsoft.com/exchange/services/2006/types" 
 		xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
   		<soap:Header>
-    		<t:RequestServerVersion Version="Exchange2013_SP1" />
+    		<t:RequestServerVersion Version="Exchange2010_SP2" />
   		</soap:Header>
   		<soap:Body>
 `
@@ -29,6 +30,18 @@ type Config struct {
 	Dump    bool
 	NTLM    bool
 	SkipTLS bool
+	Http2   bool
+}
+
+// DefaultConfig sets the default configuration
+// use http1.1 instead of http2
+func GetDefaultConfig() Config {
+	c := Config{}
+	c.Dump = true
+	c.NTLM = true
+	c.SkipTLS = true
+	c.Http2 = false
+	return c
 }
 
 type Client interface {
@@ -77,11 +90,25 @@ func (c *client) SendAndReceive(body []byte) ([]byte, error) {
 	req.SetBasicAuth(c.Username, c.Password)
 	req.Header.Set("Content-Type", "text/xml")
 
-	client := &http.Client{
-		CheckRedirect: func(req *http.Request, via []*http.Request) error {
-			return http.ErrUseLastResponse
-		},
+	var client *http.Client
+
+	if c.config.Http2 {
+		client = &http.Client{
+			CheckRedirect: func(req *http.Request, via []*http.Request) error {
+				return http.ErrUseLastResponse
+			},
+		}
+	} else {
+		client = &http.Client{
+			Transport: &http.Transport{
+				TLSNextProto: make(map[string]func(authority string, c *tls.Conn) http.RoundTripper),
+			},
+			CheckRedirect: func(req *http.Request, via []*http.Request) error {
+				return http.ErrUseLastResponse
+			},
+		}
 	}
+
 	applyConfig(c.config, client)
 
 	resp, err := client.Do(req)
@@ -105,8 +132,15 @@ func (c *client) SendAndReceive(body []byte) ([]byte, error) {
 
 func applyConfig(config *Config, client *http.Client) {
 	if config.NTLM {
-		client.Transport = ntlmssp.Negotiator{}
+		client.Transport = &ntlmssp.Negotiator{
+			RoundTripper: client.Transport,
+		}
 	}
+	// if config.Https && config.NTLM {
+	// 	xprt := client.Transport
+	// 	xprt.TLSNextProto = make(map[string]func(authority string, c *tls.Conn) http.RoundTripper)
+	// 	client.Transport = &xprt
+	// }
 	if config.SkipTLS {
 		http.DefaultTransport.(*http.Transport).TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
 	}

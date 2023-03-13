@@ -1,17 +1,22 @@
 package ews
 
 import (
+	"encoding/base64"
 	"encoding/xml"
 	"errors"
+	"io"
+	"log"
+	"os"
+	"path/filepath"
 	"time"
 )
 
 type CreateItem struct {
-	XMLName                struct{}          `xml:"m:CreateItem"`
-	MessageDisposition     string            `xml:"MessageDisposition,attr"`
-	SendMeetingInvitations string            `xml:"SendMeetingInvitations,attr"`
-	SavedItemFolderId      SavedItemFolderId `xml:"m:SavedItemFolderId"`
-	Items                  Items             `xml:"m:Items"`
+	XMLName                struct{}           `xml:"m:CreateItem"`
+	MessageDisposition     string             `xml:"MessageDisposition,attr"`
+	SendMeetingInvitations string             `xml:"SendMeetingInvitations,attr,omitempty"`
+	SavedItemFolderId      *SavedItemFolderId `xml:"m:SavedItemFolderId,omitempty"`
+	Items                  Items              `xml:"m:Items"`
 }
 
 type Items struct {
@@ -24,11 +29,26 @@ type SavedItemFolderId struct {
 }
 
 type Message struct {
-	ItemClass    string     `xml:"t:ItemClass"`
-	Subject      string     `xml:"t:Subject"`
-	Body         Body       `xml:"t:Body"`
-	Sender       OneMailbox `xml:"t:Sender"`
-	ToRecipients XMailbox   `xml:"t:ToRecipients"`
+	ItemClass     string       `xml:"t:ItemClass,omitempty"`
+	ItemId        *ItemId      `xml:"t:ItemId,omitempty"`
+	Subject       string       `xml:"t:Subject"`
+	Body          Body         `xml:"t:Body"`
+	Attachments   *Attachments `xml:"t:Attachments,omitempty"`
+	Sender        *OneMailbox  `xml:"t:Sender,omitempty"`
+	ToRecipients  *XMailbox    `xml:"t:ToRecipients"`
+	CcRecipients  *XMailbox    `xml:"t:CcRecipients,omitempty"`
+	BccRecipients *XMailbox    `xml:"t:BccRecipients,omitempty"`
+}
+
+type Attachments struct {
+	FileAttachment []FileAttachment `xml:"t:FileAttachment"`
+}
+
+type FileAttachment struct {
+	Content        string `xml:"t:Content"`
+	Name           string `xml:"t:Name"`
+	IsInline       bool   `xml:"t:IsInline"`
+	IsContactPhoto bool   `xml:"t:IsContactPhoto"`
 }
 
 type CalendarItem struct {
@@ -87,13 +107,97 @@ type ResponseMessages struct {
 	CreateItemResponseMessage Response `xml:"CreateItemResponseMessage"`
 }
 
-// CreateMessageItem
-// https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/createitem-operation-email-message
-func CreateMessageItem(c Client, m ...Message) error {
+// Create Attachments By Paths
+func CreateAttachmentsByPaths(paths ...string) *Attachments {
+	var attachments Attachments
+	for _, path := range paths {
+		attachments.FileAttachment = append(attachments.FileAttachment, CreateFileAttachmentByPath(path))
+	}
+	return &attachments
+}
 
+// Create FileAttachment By Name and Path
+func CreateFileAttachmentByNameAndPath(name string, path string) FileAttachment {
+	f, err := os.Open(path)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer f.Close()
+	b, err2 := io.ReadAll(f)
+	if err2 != nil {
+		log.Fatal(err2)
+	}
+	if name == "" {
+		_, name = filepath.Split(path)
+	}
+
+	return FileAttachment{
+		Content:        base64.StdEncoding.EncodeToString(b),
+		Name:           name,
+		IsInline:       false,
+		IsContactPhoto: false,
+	}
+}
+
+func CreateFileAttachmentByPath(path string) FileAttachment {
+	return CreateFileAttachmentByNameAndPath("", path)
+}
+
+func createMessageItemWithAttachment(c Client, m ...Message) error {
+	// 1 - Save the message without attachments
+	item := &CreateItem{
+		MessageDisposition: "SaveOnly",
+	}
+	item.Items.Message = append(item.Items.Message, m...)
+	attachmentList := make([]FileAttachment, 0)
+	for i := range item.Items.Message {
+		attachmentList = append(attachmentList, item.Items.Message[i].Attachments.FileAttachment...)
+		item.Items.Message[i].Attachments = nil
+		item.Items.Message[i].ItemClass = ""
+	}
+	xmlBytes, err := xml.MarshalIndent(item, "", "  ")
+	if err != nil {
+		return err
+	}
+	bb, err := c.SendAndReceive(xmlBytes)
+	if err != nil {
+		return err
+	}
+	resp, err := checkCreateItemResponse(bb)
+	if err != nil {
+		return err
+	}
+
+	// 2 - Save the attachments
+	if len(*resp.Items.Message) <= 0 {
+		return errors.New("do not have ParentId")
+	}
+	attachments := &Attachments{
+		FileAttachment: attachmentList,
+	}
+	messages := *resp.Items.Message
+
+	attachmentResp, err := SaveCreateAttachment(c, attachments, messages[0].ItemId)
+	if err != nil {
+		return err
+	}
+
+	// 3 - Send the mail
+	if len(*attachmentResp) > 0 {
+		messages[0].ItemId.ChangeKey = (*attachmentResp)[0].FileAttachmentId.RootItemChangeKey
+	}
+	err = SendSavedItem(c, &ItemIds{[]ItemId{*messages[0].ItemId}})
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func createMessageItem(c Client, m ...Message) error {
 	item := &CreateItem{
 		MessageDisposition: "SendAndSaveCopy",
-		SavedItemFolderId:  SavedItemFolderId{DistinguishedFolderId{Id: "sentitems"}},
+		SavedItemFolderId:  &SavedItemFolderId{DistinguishedFolderId{Id: "sentitems"}},
 	}
 	item.Items.Message = append(item.Items.Message, m...)
 
@@ -107,11 +211,23 @@ func CreateMessageItem(c Client, m ...Message) error {
 		return err
 	}
 
-	if err := checkCreateItemResponseForErrors(bb); err != nil {
+	if _, err := checkCreateItemResponse(bb); err != nil {
 		return err
 	}
 
 	return nil
+}
+
+// CreateMessageItem
+// https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/createitem-operation-email-message
+func CreateMessageItem(c Client, m ...Message) error {
+	for i := range m {
+		if len(m[i].Attachments.FileAttachment) > 0 {
+			return createMessageItemWithAttachment(c, m...)
+		}
+	}
+
+	return createMessageItem(c, m...)
 }
 
 // CreateCalendarItem
@@ -120,7 +236,7 @@ func CreateCalendarItem(c Client, ci ...CalendarItem) error {
 
 	item := &CreateItem{
 		SendMeetingInvitations: "SendToAllAndSaveCopy",
-		SavedItemFolderId:      SavedItemFolderId{DistinguishedFolderId{Id: "calendar"}},
+		SavedItemFolderId:      &SavedItemFolderId{DistinguishedFolderId{Id: "calendar"}},
 	}
 	item.Items.CalendarItem = append(item.Items.CalendarItem, ci...)
 
@@ -134,22 +250,21 @@ func CreateCalendarItem(c Client, ci ...CalendarItem) error {
 		return err
 	}
 
-	if err := checkCreateItemResponseForErrors(bb); err != nil {
+	if _, err := checkCreateItemResponse(bb); err != nil {
 		return err
 	}
 
 	return nil
 }
 
-func checkCreateItemResponseForErrors(bb []byte) error {
+func checkCreateItemResponse(bb []byte) (*Response, error) {
 	var soapResp createItemResponseBodyEnvelop
 	if err := xml.Unmarshal(bb, &soapResp); err != nil {
-		return err
+		return nil, err
 	}
-
 	resp := soapResp.Body.CreateItemResponse.ResponseMessages.CreateItemResponseMessage
 	if resp.ResponseClass == ResponseClassError {
-		return errors.New(resp.MessageText)
+		return nil, errors.New(resp.MessageText)
 	}
-	return nil
+	return &resp, nil
 }

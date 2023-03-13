@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xmlns:m="https://schemas.microsoft.com/exchange/services/2006/messages"
+               xmlns:t="https://schemas.microsoft.com/exchange/services/2006/types"
+               xmlns:soap="https://schemas.xmlsoap.org/soap/envelope/">
+  <soap:Header>
+    <t:RequestServerVersion Version="Exchange2007_SP1" />
+  </soap:Header>
+  <soap:Body>
+    <m:CreateItem MessageDisposition="SaveOnly">
+      <m:Items>
+        <t:Message>
+          <t:Subject>Message with Attachments</t:Subject>
+          <t:Body BodyType="HTML">This message contains four file attachments 
+              and one message item attachment.</t:Body>
+          <t:Attachments>
+            <t:FileAttachment>
+              <t:Name>FileAttachment.txt</t:Name>
+              <t:IsInline>false</t:IsInline>
+              <t:IsContactPhoto>false</t:IsContactPhoto>
+              <t:Content>VGhpcyBpcyBhIGZpbGUgYXR0YWNobWVudC4=</t:Content>
+            </t:FileAttachment>
+            <t:FileAttachment>
+              <t:Name>SecondAttachment.txt</t:Name>
+              <t:IsInline>false</t:IsInline>
+              <t:IsContactPhoto>false</t:IsContactPhoto>
+              <t:Content>VGhpcyBpcyB0aGUgc2Vjb25kIGZpbGUgYXR0YWNobWVudC4=</t:Content>
+            </t:FileAttachment>
+            <t:FileAttachment>
+              <t:Name>ThirdAttachment.jpg</t:Name>
+              <t:IsInline>false</t:IsInline>
+              <t:IsContactPhoto>false</t:IsContactPhoto>
+              <t:Content>nAoAXNIZMVEZs5GKhdzRcLH/9k=</t:Content>
+            </t:FileAttachment>
+            <t:FileAttachment>
+              <t:Name>FourthAttachment.txt</t:Name>
+              <t:IsInline>false</t:IsInline>
+              <t:IsContactPhoto>false</t:IsContactPhoto>
+              <t:Content>obWVudC4=…</t:Content>
+            </t:FileAttachment>
+            <t:ItemAttachment>
+              <t:Name>Attached Message Item</t:Name>
+              <t:IsInline>false</t:IsInline>
+              <t:Message>
+                <t:Subject>Message Item Subject</t:Subject>
+                <t:Body BodyType="HTML">Message Item Body</t:Body>
+                <t:ToRecipients>
+                  <t:Mailbox>
+                    <t:EmailAddress>sadie@contoso.com</t:EmailAddress>
+                  </t:Mailbox>
+                  <t:Mailbox>
+                    <t:EmailAddress>mack@contoso.com</t:EmailAddress>
+                  </t:Mailbox>
+                </t:ToRecipients>
+              </t:Message>
+            </t:ItemAttachment>
+          </t:Attachments>
+          <t:ToRecipients>
+            <t:Mailbox>
+              <t:EmailAddress>sadie@contoso.com</t:EmailAddress>
+            </t:Mailbox>
+            <t:Mailbox>
+              <t:EmailAddress>ronnie@contoso.com</t:EmailAddress>
+            </t:Mailbox>
+          </t:ToRecipients>
+        </t:Message>
+      </m:Items>
+    </m:CreateItem>
+  </soap:Body>
+</soap:Envelope>

@@ -1,5 +1,22 @@
-## EWS Exchange Web Service
-Exchange Web Service client for golang
+## EWS Exchange Web Service Extend
+Exchange Web Service client for golang,Base on `mhewedy/ews`
+
+### Improvement:
+
+* fixed some bug about `NTLM` (update `github.com/Azure/go-ntlmssp` package version ).
+* fixed some service not support `HTTP1.1` ,but go will use `HTTP2.0` if our service URL is `HTTPS` (After `Go 1.6` ，See [THIS]()).
+* Add support for email with Attachment.
+* Using strategy like [ews-java-api](https://github.com/OfficeDev/ews-java-api) deal with email with attachment.which is save the mail content and subject,than save mail attachment,finally send the mail we saved.(Because _ews-java-api_ project comment said, see below)
+```java
+        // Bug E14:80316 -- If the message has attachments, save as a
+        // draft (and add attachments) before sending.
+```
+
+### TODO:
+
+- [ ]   Inline Attachment - like picture in email body.
+- [ ]   Support html email body with inline attachment.
+- [x]   Support Mail CC and BCC.
 
 ### usage:
 ```go
@@ -7,8 +24,8 @@ package main
 
 import (
 	"fmt"
-	"github.com/mhewedy/ews"
-	"github.com/mhewedy/ews/ewsutil"
+	"github.com/johnchenkzy/ews"
+	"github.com/johnchenkzy/ews/ewsutil"
 	"log"
 )
 
@@ -43,8 +60,9 @@ func main() {
 |----------------------------------	|----------------------	|------------------	|
 | eDiscovery operations            	|                      	|                  	|
 | Exchange mailbox data operations 	|                      	|                  	|
-|                                  	| CreateItem operation 	| ✔️ (Email & Calendar)|
+|                                  	| CreateItem operation 	| ✔️ (Email & Calendar & Attachment) |
 |                                  	| GetUserPhoto      	| ✔️                |
+| CreateAttachement operation |  | ✔️ |
 | Availability operations          	|                      	|                  	|
 |                                  	| GetUserAvailability  	| ✔️             	|
 |                                  	| GetRoomLists      	| ✔️             	|

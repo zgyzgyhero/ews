@@ -2,11 +2,40 @@ package ews
 
 import (
 	"encoding/xml"
-	"github.com/stretchr/testify/assert"
+	"fmt"
 	"log"
 	"testing"
 	"time"
+
+	"github.com/stretchr/testify/assert"
 )
+
+func Test_marshal_Message_Attachments(t *testing.T) {
+	mails := make([]Mailbox, 0)
+	mails = append(mails,
+		Mailbox{EmailAddress: "sadie@contoso.com"},
+		Mailbox{EmailAddress: "ronnie@contoso.com"},
+	)
+
+	attachments := CreateAttachmentsByPaths("C:\\Users\\JohnChen\\Desktop\\需求分析说明书.md", "./FileAttachment2.txt", "FileAttachment3.txt")
+
+	msg := &Message{
+		Subject: "Meeting Cancellation",
+		Body: Body{
+			BodyType: "Text",
+			Body:     []byte("The meeting scheduled for tomorrow has been canceled."),
+		},
+		Attachments:  attachments,
+		ToRecipients: &XMailbox{
+			mails,
+		},
+	};
+	xmlbytes, err := xml.MarshalIndent(msg, "", "  ")
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(string(xmlbytes))
+}
 
 func Test_marshal_CalendarItem(t *testing.T) {
 

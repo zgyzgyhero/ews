@@ -1,8 +1,9 @@
 package ewsutil
 
 import (
-	"github.com/mhewedy/ews"
 	"time"
+
+	"github.com/johnchenkzy/ews"
 )
 
 func CreateHTMLEvent(

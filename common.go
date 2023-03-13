@@ -1,6 +1,7 @@
 package ews
 
 import (
+	"encoding/xml"
 	"fmt"
 	"time"
 )
@@ -18,6 +19,15 @@ type Response struct {
 	MessageText   string        `xml:"MessageText"`
 	ResponseCode  string        `xml:"ResponseCode"`
 	MessageXml    MessageXml    `xml:"MessageXml"`
+	Items         RespItems         `xml:"Items"`
+}
+type RespItems struct {
+	Message *[]RespMessage `xml:"Message"`
+}
+
+type RespMessage struct {
+	XMLName xml.Name `xml:"Message"`
+	ItemId *ItemId   `xml:"ItemId"`
 }
 
 type EmailAddress struct {
