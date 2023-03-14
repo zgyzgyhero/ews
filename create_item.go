@@ -176,6 +176,9 @@ func createMessageItemWithAttachment(c Client, m ...Message) error {
 		FileAttachment: attachmentList,
 	}
 	messages := *resp.Items.Message
+	if len(messages) > 0 {
+		messages[0].ItemId.ChangeKey = ""
+	}
 
 	attachmentResp, err := SaveCreateAttachment(c, attachments, messages[0].ItemId)
 	if err != nil {

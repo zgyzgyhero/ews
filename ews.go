@@ -7,8 +7,9 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/http/httputil"
+	"strconv"
 
-	"github.com/Azure/go-ntlmssp"
+	httpntlm "github.com/vadimi/go-http-ntlm/v2"
 )
 
 const (
@@ -52,6 +53,7 @@ type Client interface {
 
 type client struct {
 	EWSAddr  string
+	Domain   string
 	Username string
 	Password string
 	config   *Config
@@ -85,10 +87,15 @@ func (c *client) SendAndReceive(body []byte) ([]byte, error) {
 		return nil, err
 	}
 	defer req.Body.Close()
+	req.Header.Set("Content-Type", "text/xml")
+	req.Header.Set("User-Agent", "ExchangeServicesClient/0.0.0.0")
+	req.Header.Set("Accept", "text/xml")
+	req.Header.Set("Keep-Alive", "300")
+	req.Header.Set("Connection", "Keep-Alive")
+	req.Header.Set("Content-Length", strconv.Itoa(len(bb)))
 	logRequest(c, req)
 
 	req.SetBasicAuth(c.Username, c.Password)
-	req.Header.Set("Content-Type", "text/xml")
 
 	var client *http.Client
 
@@ -109,7 +116,7 @@ func (c *client) SendAndReceive(body []byte) ([]byte, error) {
 		}
 	}
 
-	applyConfig(c.config, client)
+	applyConfig(client, c)
 
 	resp, err := client.Do(req)
 	if err != nil {
@@ -130,10 +137,19 @@ func (c *client) SendAndReceive(body []byte) ([]byte, error) {
 	return respBytes, err
 }
 
-func applyConfig(config *Config, client *http.Client) {
+func applyConfig(client *http.Client, c *client) {
+	config := c.config
 	if config.NTLM {
-		client.Transport = &ntlmssp.Negotiator{
-			RoundTripper: client.Transport,
+		client.Transport = &httpntlm.NtlmTransport{
+			Domain:   c.Domain,
+			User:     c.Username,
+			Password: c.Password,
+			// Configure RoundTripper if necessary, otherwise DefaultTransport is used
+			RoundTripper: &http.Transport{
+				// provide tls config
+				TLSClientConfig: &tls.Config{},
+				// other properties RoundTripper, see http.DefaultTransport
+			},
 		}
 	}
 	// if config.Https && config.NTLM {

@@ -12,6 +12,14 @@ github.com/stretchr/testify v1.7.1/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/
 github.com/stretchr/testify v1.8.0/go.mod h1:yNjHg4UonilssWZ8iaSj1OCr/vHnekPRkoO+kdMU+MU=
 github.com/stretchr/testify v1.8.2 h1:+h33VjcLVPDHtOdpUCuF+7gSuG3yGIftsP1YvFihtJ8=
 github.com/stretchr/testify v1.8.2/go.mod h1:w2LPCIKwWwSfY2zedu0+kehJoqGctiVI29o6fzry7u4=
+github.com/vadimi/go-http-ntlm v1.0.3 h1:o6n2vAtP1MlLT73jIXuQYryIcWzXyMN0SCQWZ2QVLLc=
+github.com/vadimi/go-http-ntlm v1.0.3/go.mod h1:SwhhmybQ4Yn1mC53UPmQ6MCrBX6UvJHlS1Xt89OmM9M=
+github.com/vadimi/go-http-ntlm/v2 v2.4.1 h1:y/OWq3pp8+qQymcYHf7rztV9VcLH3cbqnIa4WSXFRVw=
+github.com/vadimi/go-http-ntlm/v2 v2.4.1/go.mod h1:KduY1xBqaL8Q2Rh/erMvRQHKoj3VAT9GNYxe9EH+rOo=
+github.com/vadimi/go-ntlm v1.0.1 h1:Pi8xmngo7CQQl4Hd8J6rDcxY1LZKwyutTvx4W035Hto=
+github.com/vadimi/go-ntlm v1.0.1/go.mod h1:hPTY60eLSKGj9oUJAB+kZiLs2Cg5eKdH60aLczM9rMg=
+github.com/vadimi/go-ntlm v1.2.1 h1:y2xZf/a5+BJlYNJIIulP1q8F438H9bU7aGcYE53vghQ=
+github.com/vadimi/go-ntlm v1.2.1/go.mod h1:hPTY60eLSKGj9oUJAB+kZiLs2Cg5eKdH60aLczM9rMg=
 golang.org/x/crypto v0.0.0-20190308221718-c2843e01d9a2/go.mod h1:djNgcEr1/C05ACkg1iLfiJU5Ep61QUkGW8qpdssI0+w=
 golang.org/x/crypto v0.0.0-20191206172530-e9b2fee46413 h1:ULYEB3JvPRE/IfO+9uO7vKV/xzVTO7XPAwm8xbf4w2g=
 golang.org/x/crypto v0.0.0-20191206172530-e9b2fee46413/go.mod h1:LzIPMQfyMNhhGPhUkYOs5KpL4U8rLKemX1yGLhDgUto=
