@@ -24,8 +24,8 @@ package main
 
 import (
 	"fmt"
-	"github.com/johnchenkzy/ews"
-	"github.com/johnchenkzy/ews/ewsutil"
+	"github.com/mhewedy/ews"
+	"github.com/mhewedy/ews/ewsutil"
 	"log"
 )
 

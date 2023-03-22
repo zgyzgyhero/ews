@@ -4,11 +4,11 @@ import (
 	"encoding/base64"
 	"fmt"
 
-	"github.com/johnchenkzy/ews"
+	"github.com/zgyzgyhero/ews"
 )
 
 // GetUserPhoto
-//https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getuserphoto-operation
+// https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getuserphoto-operation
 func GetUserPhotoBase64(c ews.Client, email string) (string, error) {
 
 	resp, err := ews.GetUserPhoto(c, &ews.GetUserPhotoRequest{

@@ -3,7 +3,7 @@ package ewsutil
 import (
 	"time"
 
-	"github.com/johnchenkzy/ews"
+	"github.com/zgyzgyhero/ews"
 )
 
 type EventUser struct {

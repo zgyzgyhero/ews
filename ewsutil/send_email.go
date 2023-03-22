@@ -3,7 +3,7 @@ package ewsutil
 import (
 	"fmt"
 
-	"github.com/johnchenkzy/ews"
+	"github.com/zgyzgyhero/ews"
 )
 
 type Email struct {

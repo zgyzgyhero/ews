@@ -2,8 +2,8 @@ package ews_test
 
 import (
 	"fmt"
-	. "github.com/mhewedy/ews"
-	"github.com/mhewedy/ews/ewsutil"
+	. "github.com/zgyzgyhero/ews"
+	"github.com/zgyzgyhero/ews/ewsutil"
 	"io/ioutil"
 	"math"
 	"os"

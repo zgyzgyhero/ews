@@ -3,7 +3,7 @@ package ewsutil
 import (
 	"math"
 
-	"github.com/johnchenkzy/ews"
+	"github.com/zgyzgyhero/ews"
 )
 
 // FindPeople find persona slice by query string
