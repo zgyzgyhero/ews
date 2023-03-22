@@ -225,8 +225,10 @@ func createMessageItem(c Client, m ...Message) error {
 // https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/createitem-operation-email-message
 func CreateMessageItem(c Client, m ...Message) error {
 	for i := range m {
-		if len(m[i].Attachments.FileAttachment) > 0 {
-			return createMessageItemWithAttachment(c, m...)
+		if m[i].Attachments != nil {
+			if len(m[i].Attachments.FileAttachment) > 0 {
+				return createMessageItemWithAttachment(c, m...)
+			}
 		}
 	}
 

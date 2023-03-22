@@ -7,13 +7,13 @@ import (
 )
 
 type Email struct {
-	To      []string
-	Subject string
-	Body    string
-	BodyType string
+	To          []string
+	Subject     string
+	Body        string
+	BodyType    string
 	Attachments []string
-	Cc []string
-	Bcc []string
+	Cc          []string
+	Bcc         []string
 }
 
 const (
@@ -36,6 +36,7 @@ func SendEmail(c ews.Client, to []string, subject, body string) error {
 				EmailAddress: c.GetUsername(),
 			},
 		},
+		ToRecipients: &ews.XMailbox{},
 	}
 	mb := make([]ews.Mailbox, len(to))
 	for i, addr := range to {
@@ -49,7 +50,7 @@ func SendEmail(c ews.Client, to []string, subject, body string) error {
 func SendEmails(c ews.Client, email Email) error {
 	m := ews.Message{
 		ItemClass: "IPM.Note",
-		Subject: email.Subject,
+		Subject:   email.Subject,
 		Body: ews.Body{
 			BodyType: email.BodyType,
 			Body:     []byte(email.Body),
@@ -66,7 +67,7 @@ func SendEmails(c ews.Client, email Email) error {
 		mb[i].EmailAddress = addr
 	}
 	if len(mb) > 0 {
-		m.ToRecipients = &ews.XMailbox{};
+		m.ToRecipients = &ews.XMailbox{}
 		m.ToRecipients.Mailbox = append(m.ToRecipients.Mailbox, mb...)
 	}
 
@@ -75,8 +76,8 @@ func SendEmails(c ews.Client, email Email) error {
 	for i, addr := range email.Cc {
 		mb[i].EmailAddress = addr
 	}
-	if len(mb)>0 {
-		m.CcRecipients = &ews.XMailbox{};
+	if len(mb) > 0 {
+		m.CcRecipients = &ews.XMailbox{}
 		m.CcRecipients.Mailbox = append(m.CcRecipients.Mailbox, mb...)
 	}
 
@@ -86,9 +87,8 @@ func SendEmails(c ews.Client, email Email) error {
 		mb[i].EmailAddress = addr
 	}
 
-	
-	if len(mb)>0 {
-		m.BccRecipients = &ews.XMailbox{};
+	if len(mb) > 0 {
+		m.BccRecipients = &ews.XMailbox{}
 		m.BccRecipients.Mailbox = append(m.BccRecipients.Mailbox, mb...)
 	}
 
