@@ -1,4 +1,4 @@
-module github.com/johnchenkzy/ews
+module github.com/zgyzgyhero/ews
 
 go 1.12
 
